@@ -1,0 +1,8 @@
+urban_context	Africa	Antarctica	Asia	Europe	North America	Oceania	South America	unresolved
+air_dust	11	5	224	117	86	9	9	33
+built_environment	1	0	36	23	45	0	0	23
+municipal_wastewater	59	2	2728	861	481	59	74	198
+soil_greenspace	9	1	69	32	31	8	3	16
+surfaces_infrastructure	1	0	10	11	7	0	1	2
+transit	0	0	4	2	5	0	0	0
+water_drainage	9	0	81	31	48	5	6	12

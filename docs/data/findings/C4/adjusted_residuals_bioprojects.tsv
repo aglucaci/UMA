@@ -1,0 +1,8 @@
+urban_context	Africa	Antarctica	Asia	Europe	North America	Oceania	South America
+air_dust	1.13	5.34	-5.51	2.6	3.39	0.72	0.28
+built_environment	-0.62	-0.41	-5.57	0.31	8.89	-1.3	-1.4
+municipal_wastewater	-4.07	-4.19	10.72	-1.91	-10.02	-2.15	-0.6
+soil_greenspace	4.0	1.6	-3.97	0.07	2.48	3.72	0.16
+surfaces_infrastructure	0.68	-0.22	-3.06	2.17	1.58	-0.69	0.64
+transit	-0.44	-0.13	-1.64	-0.21	3.1	-0.42	-0.45
+water_drainage	3.43	-0.54	-4.35	-1.17	5.26	1.35	1.59
