@@ -1,5 +1,5 @@
 (function(){
-  // UMDB website data (site schema 3). Built from SQLite by scripts/umdb_harvester/site.py.
+  // UMA website data (site schema 3), built from a UMDB data release by uma/build.py (`uma build`).
   //
   //   summary.json   exact headline counts, labelled by unit
   //   geo.json       validated location hierarchy (ISO countries, GeoNames regions and places)
@@ -659,4 +659,27 @@
   };
   window.UMDB = api;
   window.UMDBDB = api;
+
+  // Every page that loads data says which UMDB release it shows (manifest.json -> release).
+  function releaseLine(m){
+    const r = (m && m.release) || {};
+    if (!r.version) return "";
+    const url = r.url || `https://github.com/aglucaci/UMDB/releases/tag/v${encodeURIComponent(r.version)}`;
+    const doi = r.doi ? ` · DOI <a href="https://doi.org/${escapeHtml(r.doi)}">${escapeHtml(r.doi)}</a>` : "";
+    const built = (r.database_built_utc || "").slice(0, 10);
+    const striga = r.analysis && r.analysis.version ? ` · analyses: <a href="https://github.com/aglucaci/STRIGA">STRIGA</a> ${escapeHtml(r.analysis.version)}` : "";
+    return `Showing <a href="${escapeHtml(url)}">UMDB release ${escapeHtml(r.version)}</a>${built ? ` (catalog built ${escapeHtml(built)})` : ""}${doi}${striga}.`;
+  }
+  api.releaseLine = releaseLine;
+  function showRelease(){
+    fetchManifest().then((m) => {
+      const html = releaseLine(m);
+      if (!html || document.querySelector(".release-line")) return;
+      const el = Object.assign(document.createElement("div"), { className: "release-line" });
+      el.innerHTML = html;
+      const footer = document.querySelector(".site-footer");
+      if (footer) footer.appendChild(el); else document.body.appendChild(el);
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showRelease); else showRelease();
 })();

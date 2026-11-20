@@ -573,3 +573,15 @@ body.is-page-loading .page-loading-pill{
 .hbar .track,.hbar .fill{display:block}
 .data-table.compact{min-width:0}
 .data-table.compact td,.data-table.compact th{padding:6px 6px}
+
+/* Which UMDB release the page shows (added by db.js from db/manifest.json) */
+.release-line{
+  margin-top:8px;
+  font-size:12.5px;
+  color:var(--muted);
+}
+.release-line a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
+.status-pill{ display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); white-space:nowrap; }
+.status-pill.supported{ color:#4ec5a8; border-color:rgba(78,197,168,.5); }
+.status-pill.not_supported{ color:#f0a35e; border-color:rgba(240,163,94,.5); }
+.status-pill.inconclusive{ color:#e6d36a; border-color:rgba(230,211,106,.5); }

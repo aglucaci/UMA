@@ -1,0 +1,5 @@
+# UMDB releases downloaded by `uma fetch` (large; the built docs/db/ is committed)
+releases/
+__pycache__/
+*.py[cod]
+.DS_Store

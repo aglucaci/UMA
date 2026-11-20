@@ -1,4 +1,8 @@
-"""Website data for GitHub Pages, built from the SQLite database.
+"""Website data for GitHub Pages, built from a published UMDB data release.
+
+`uma build <release folder>` reads the release's database, collections,
+GeoNames reference and STRIGA results (see release.py) and writes docs/db/.
+Every page shows the release version it was built from.
 
 The site never ships every run record. It loads a few small files and fetches
 one project's details only when someone opens it:
@@ -20,8 +24,10 @@ one project's details only when someone opens it:
                            of projects.json, split by the accession's last two
                            digits, so a /sample or /run page finds its project file
   docs/db/collections.json curated collections with statistics, and
-  docs/db/collections/<slug>.tsv.gz  their run lists (see cohorts.py)
-  docs/db/manifest.json    build metadata and file list
+  docs/db/collections/<slug>.tsv.gz  their run lists, copied from the release
+  docs/db/analysis.json    STRIGA results bundled in the release (hypothesis statuses,
+                           one-line results, pipeline version), when present
+  docs/db/manifest.json    build metadata, the release shown, and the file list
 
 All geography comes from `sample_locations` (gazetteer-validated, see geo.py):
 a country is published when its status is verified or probable, a place only
@@ -42,9 +48,13 @@ import time
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Tuple
 
-from .config import DOCS_DIR
-from .database import DB_PATH, SCHEMA_VERSION
-from .utils import log, paint, num, fmt_duration, utc_now, scrub_secrets
+import csv
+import shutil
+
+from .release import Release
+from .util import log, paint, num, fmt_duration, utc_now, scrub_secrets
+
+DOCS_DIR = "docs"
 
 SITE_SCHEMA_VERSION = "3.0.0"
 SITE_DB_DIR = os.path.join(DOCS_DIR, "db")
@@ -125,19 +135,19 @@ def _has_table(con: sqlite3.Connection, name: str) -> bool:
     return con.execute("SELECT 1 FROM sqlite_master WHERE name = ?", (name,)).fetchone() is not None
 
 
-def build_site(db_path: str = DB_PATH, out_dir: str = SITE_DB_DIR) -> Dict[str, Any]:
-    if not os.path.exists(db_path):
-        raise FileNotFoundError(f"{db_path} not found; run `umdb db build` first")
+def build_site(release: Release, out_dir: str = SITE_DB_DIR) -> Dict[str, Any]:
+    db_path = release.database()
     t0 = time.time()
     shard_dir = os.path.join(out_dir, "p")
     os.makedirs(shard_dir, exist_ok=True)
     con = sqlite3.connect(db_path)
     con.row_factory = sqlite3.Row
     meta = dict(con.execute("SELECT key, value FROM meta").fetchall())
-    log(f"Building website data in {out_dir}/ from {db_path}")
+    db_schema = meta.get("schema_version")
+    log(f"Building website data in {out_dir}/ from UMDB release {release.version} ({release.path})")
     if not _has_table(con, "sample_locations"):
         raise RuntimeError(f"{db_path} predates gazetteer validation (schema {meta.get('schema_version')}); "
-                           f"run `umdb db build`")
+                           f"use a newer UMDB release")
     if not con.execute("SELECT 1 FROM sample_locations LIMIT 1").fetchone():
         log(paint("  no validated locations in the database (GeoNames unavailable at build time): "
                   "every sample is published without country or place", "warn"))
@@ -163,7 +173,7 @@ def build_site(db_path: str = DB_PATH, out_dir: str = SITE_DB_DIR) -> Dict[str, 
                        "place": r["place_id"] if (iso and r["status"] in ACCEPTED) else None,
                        "status": r["status"], "method": r["method"], "note": r["note"]}
     countries = {r["iso2"]: dict(r) for r in con.execute("SELECT iso2, iso_numeric, name, continent FROM countries")}
-    population = _country_population()
+    population = _country_population(release)
     admin1 = {r["code"]: dict(r) for r in con.execute("SELECT code, country_iso2, name FROM admin1")}
     places = {r["geonames_id"]: dict(r) for r in con.execute(
         "SELECT geonames_id, name, country_iso2, admin1_code, lat, lon, population, feature_code FROM places")}
@@ -332,9 +342,11 @@ def build_site(db_path: str = DB_PATH, out_dir: str = SITE_DB_DIR) -> Dict[str, 
         "v": 1, "source": "GeoNames countryInfo.txt (CC BY 4.0)", "cols": ["numeric", "iso2", "name", "continent", "population"],
         "rows": [[c["iso_numeric"], iso, c["name"], c["continent"], population.get(iso)]
                  for iso, c in sorted(countries.items()) if population.get(iso)]})}
-    from .cohorts import build_collections, write_templates
-    collections = build_collections(con, out_dir)
-    write_templates(os.path.join(os.path.dirname(out_dir), "assets", "cohort-templates.json"))
+    collections = _copy_collections(release, out_dir)
+    tpl = release.file("documentation/cohort-templates.json")
+    if tpl:  # research-package templates, so browser exports match `umdb cohort export` of this release
+        shutil.copyfile(tpl, os.path.join(os.path.dirname(out_dir), "assets", "cohort-templates.json"))
+    analysis = _analysis(release)
 
     files = {
         "summary.json": _dump(summary),
@@ -350,6 +362,7 @@ def build_site(db_path: str = DB_PATH, out_dir: str = SITE_DB_DIR) -> Dict[str, 
     files["srr_records_manifest.json"] = _dump({"generated_utc": summary["generated_utc"], "total_records": len(runs),
                                                 "parts": [], "format": "compact-v3", "see": "manifest.json"})
     files_extra["analytics.json"] = _dump(_analytics(con))
+    files_extra["analysis.json"] = _dump(analysis)
     files.update(files_extra)
     for name, data in files.items():
         _write_if_changed(os.path.join(out_dir, name), data)
@@ -364,7 +377,8 @@ def build_site(db_path: str = DB_PATH, out_dir: str = SITE_DB_DIR) -> Dict[str, 
     shard_bytes = sum(os.path.getsize(os.path.join(shard_dir, n)) for n in os.listdir(shard_dir))
     manifest = {
         "site_schema_version": SITE_SCHEMA_VERSION,
-        "database_schema_version": SCHEMA_VERSION,
+        "release": release.info(),
+        "database_schema_version": db_schema,
         "generated_utc": summary["generated_utc"],
         "database_built_utc": meta.get("built_utc"),
         "query_profiles_version": meta.get("query_profiles_version"),
@@ -394,12 +408,54 @@ def build_site(db_path: str = DB_PATH, out_dir: str = SITE_DB_DIR) -> Dict[str, 
     return manifest
 
 
-def _country_population() -> Dict[str, int]:
-    """Country populations from GeoNames countryInfo.txt (shipped with the catalog), for per-capita map layers."""
-    from .config import DATA_DIR
-    path = os.path.join(DATA_DIR, "reference", "geonames", "countryInfo.txt")
+def _copy_collections(release: Release, out_dir: str) -> Dict[str, Any]:
+    """Curated collections are defined and evaluated in UMDB; the site shows the release's copy."""
+    src = release.file("collections/collections.json")
+    if not src:
+        return {"collections": []}
+    doc = json.load(open(src, encoding="utf-8"))
+    os.makedirs(os.path.join(out_dir, "collections"), exist_ok=True)
+    keep = set()
+    for c in doc.get("collections", []):
+        name = f"{c['slug']}.tsv.gz"
+        keep.add(name)
+        if release.file(f"collections/{name}"):
+            shutil.copyfile(release.file(f"collections/{name}"), os.path.join(out_dir, "collections", name))
+    for name in os.listdir(os.path.join(out_dir, "collections")):
+        if name not in keep:
+            os.remove(os.path.join(out_dir, "collections", name))
+    _write_if_changed(os.path.join(out_dir, "collections.json"), _dump(doc))
+    return doc
+
+
+def _analysis(release: Release) -> Dict[str, Any]:
+    """STRIGA results bundled in the release: one row per hypothesis, plus what produced them."""
+    mf = release.file("analysis/striga_manifest.json")
+    if not mf:
+        return {"v": 1, "available": False, "release": release.version}
+    m = json.load(open(mf, encoding="utf-8"))
+    rows = []
+    st = release.file("analysis/hypotheses_status.tsv")
+    if st:
+        with open(st, encoding="utf-8", newline="") as fh:
+            rows = list(csv.DictReader(fh, delimiter="\t"))
+    report = release.file("analysis/report.json")
+    details: Dict[str, Any] = {}
+    if report:
+        for hid, d in (json.load(open(report, encoding="utf-8")).get("summaries") or {}).items():
+            details[hid] = {"question": d.get("question"), "caveats": d.get("caveats") or [],
+                            "files": d.get("files") or []}
+    for r in rows:
+        r.update(details.get(r["id"], {}))
+    return {"v": 1, "available": True, "release": release.version, "pipeline": m.get("pipeline"),
+            "input": m.get("input"), "created_utc": m.get("created_utc"), "hypotheses": rows}
+
+
+def _country_population(release: Release) -> Dict[str, int]:
+    """Country populations from GeoNames countryInfo.txt (in the release), for per-capita map layers."""
+    path = release.file("reference/geonames/countryInfo.txt")
     out: Dict[str, int] = {}
-    if not os.path.exists(path):
+    if not path:
         return out
     with open(path, encoding="utf-8") as fh:
         for line in fh:

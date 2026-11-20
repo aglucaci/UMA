@@ -1,0 +1,7 @@
+#ISO	ISO3	ISO-Numeric	fips	Country	Capital	Area	Pop	Continent
+US	USA	840		United States		0	0	NA
+CN	CHN	156		China		0	0	AS
+HK	HKG	344		Hong Kong		0	0	AS
+DK	DNK	208		Denmark		0	0	EU
+CA	CAN	124		Canada		0	0	NA
+GB	GBR	826		United Kingdom		0	0	EU

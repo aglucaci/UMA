@@ -1,0 +1,16 @@
+{
+ "unit": "BioSamples with a validated country",
+ "countries": [
+  {
+   "iso2": "US",
+   "name": "United States",
+   "continent": "NA",
+   "biosamples": 1,
+   "urban_biosamples": 1,
+   "bioprojects": 2,
+   "places": 1,
+   "population": 0,
+   "urban_biosamples_per_million": null
+  }
+ ]
+}

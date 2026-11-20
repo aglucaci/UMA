@@ -1,6 +1,6 @@
 (function(){
   // Curated research collections: collections.html lists them, collections.html?slug=… shows one.
-  // Definitions, statistics and run lists are built by scripts/umdb_harvester/cohorts.py.
+  // Definitions, statistics and run lists are built by cohorts.py in the UMDB repository and shipped in each release.
   const U = window.UMDB, X = window.UMDBUI;
   const { esc, fmt, href } = X;
   const root = document.getElementById("collections");
@@ -19,7 +19,7 @@
   async function detail(doc, slug){
     const c = doc.collections.find((x) => x.slug === slug);
     if (!c){ root.innerHTML = `<div class="panel empty">No collection called “${esc(slug)}”. <a href="./collections.html">All collections</a></div>`; return; }
-    document.title = `UMDB — ${c.title}`;
+    document.title = `UMA — ${c.title}`;
     document.getElementById("page-title").textContent = c.title;
     document.getElementById("page-lead").textContent = c.subtitle;
     const s = c.summary;
@@ -41,13 +41,14 @@
           <h3>Suggested use</h3><p style="font-size:14px;margin:0">${esc(c.use)}</p>
           <h3>Recommended workflow</h3><p style="font-size:14px;margin:0">${esc(c.workflow)}</p></div>
         <div class="panel"><h2>Reproduce it</h2>
-          <pre class="mono" style="white-space:pre-wrap;font-size:12.5px;background:rgba(0,0,0,.25);padding:12px;border-radius:12px;margin:0">umdb cohort collection ${esc(c.slug)} -o ${esc(c.slug)}/
+          <pre class="mono" style="white-space:pre-wrap;font-size:12.5px;background:rgba(0,0,0,.25);padding:12px;border-radius:12px;margin:0"># with the UMDB command line (github.com/aglucaci/UMDB)
+umdb cohort collection ${esc(c.slug)} -o ${esc(c.slug)}/
 
 # balanced: at most 25 samples per city and habitat, 200 per study
 umdb cohort collection ${esc(c.slug)} --max-per-cell 25 --max-per-project 200 --seed 20261119
 
-# reprocess the shotgun runs with the UMDB-SCIENCE pipeline
-nextflow run pipeline --cohort ${esc(c.slug)}/runs.tsv --run_reads …</pre>
+# reprocess the shotgun runs with STRIGA (github.com/aglucaci/STRIGA)
+nextflow run aglucaci/STRIGA --catalog umdb-release/ --cohort ${esc(c.slug)}/runs.tsv --run_reads …</pre>
           <p class="sub">Definition (Explorer filters): <code>${esc(X.describeFilters(c.filters))}</code></p></div>
       </div>
       <div class="grid-2" style="margin-top:16px"><div class="panel" id="c-hab"></div><div class="panel" id="c-ctry"></div></div>

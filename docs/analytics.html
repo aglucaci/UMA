@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>UMDB — Analytics</title>
+  <title>UMA — Analytics</title>
   <meta name="description" content="High-level analytics, summary tables, and JavaScript charts for the current UMDB database release." />
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon_16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon_32.png" />
@@ -257,8 +257,8 @@
       <a class="site-brand" href="./index.html">
         <div class="site-brand-mark"><img src="./assets/umdb-logo.png" alt="UMDB logo" /></div>
         <div class="site-brand-copy">
-          <strong>UMDB</strong>
-          <span>Urban Microbiome Database</span>
+          <strong>UMA</strong>
+          <span>Browser for the Urban Microbiome Database</span>
         </div>
       </a>
       <div class="site-links">
@@ -396,6 +396,14 @@
         <div class="panel" id="a-bases"></div>
         <div class="panel" id="a-complete"></div>
       </div>
+    </section>
+
+    <section class="section" id="findings">
+      <div class="section-header">
+        <h2>Findings</h2>
+        <p class="muted" style="margin:4px 0 0;font-size:14px">Hypothesis tests run by <a href="https://github.com/aglucaci/STRIGA">STRIGA</a> on exactly this release's catalog and bundled with it. Each status comes from a decision rule fixed before the data were seen; read the caveats before citing a result.</p>
+      </div>
+      <div class="panel" id="a-findings"><div class="sub">Loading…</div></div>
     </section>
 
     <section class="section">
@@ -1308,7 +1316,26 @@
     }
     setTimeout(attach, 1500); setTimeout(attach, 5000);
 
-    // Catalog structure (docs/db/analytics.json, built by site.py)
+    // Findings (docs/db/analysis.json: STRIGA results bundled in the release)
+    fetch("./db/analysis.json").then((r) => r.json()).then((F) => {
+      const el = document.getElementById("a-findings");
+      if (!F.available) { el.innerHTML = `<div class="sub">UMDB release ${X.esc(F.release || "")} does not include STRIGA results.</div>`; return; }
+      const label = { supported: "Supported", not_supported: "Not supported", inconclusive: "Inconclusive", descriptive: "Descriptive",
+                      planned: "Planned", not_run: "Not run", skipped: "Skipped" };
+      const rows = F.hypotheses || [];
+      const p = F.pipeline || {}, inp = F.input || {};
+      el.innerHTML = `<div class="chart-head"><h3>STRIGA ${X.esc(p.version || "")} on UMDB release ${X.esc(F.release)}</h3>
+          <div class="chart-tools"><button type="button" data-dl="csv">CSV</button></div></div>
+        <div class="sub" style="margin-bottom:10px">Catalog built ${X.esc((inp.built_utc || "?").slice(0, 10))}, ${X.fmt((inp.rows || {}).samples)} BioSamples analysed${inp.database_sha256 ? `, database SHA-256 <span class="mono">${X.esc(inp.database_sha256.slice(0, 12))}…</span>` : ""}${p.commit ? `, commit <span class="mono">${X.esc(p.commit.slice(0, 7))}</span>` : ""}.</div>
+        <div class="table-shell"><table class="data-table compact"><thead><tr><th>ID</th><th>Hypothesis</th><th>Status</th><th>Result</th></tr></thead>
+        <tbody>${rows.map((r) => `<tr><td class="mono">${X.esc(r.id)}</td><td>${X.esc(r.title)}<div class="muted" style="font-size:12px">${X.esc(r.program || "")}</div></td>
+          <td><span class="status-pill ${X.esc(r.status)}">${X.esc(label[r.status] || r.status)}</span></td>
+          <td style="font-size:13px">${X.esc(r.result || "")}${(r.caveats || []).length ? `<details style="margin-top:4px"><summary class="muted" style="font-size:12px;cursor:pointer">Caveats (${r.caveats.length})</summary><ul style="margin:4px 0 0 18px;font-size:12px">${r.caveats.map((c) => `<li>${X.esc(c)}</li>`).join("")}</ul></details>` : ""}</td></tr>`).join("")}</tbody></table></div>`;
+      el.querySelector("[data-dl=csv]").onclick = () => X.download(`striga_findings_${F.release}.csv`,
+        X.toCSV(rows, ["id", "track", "program", "title", "status", "result"]), "text/csv");
+    }).catch(() => { document.getElementById("a-findings").innerHTML = `<div class="sub">No findings file in this build.</div>`; });
+
+    // Catalog structure (docs/db/analytics.json, built by uma/build.py)
     fetch("./db/analytics.json").then((r) => r.json()).then((A) => {
       const lz = A.study_concentration;
       const lorenz = document.getElementById("a-lorenz");

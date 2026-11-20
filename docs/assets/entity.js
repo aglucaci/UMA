@@ -16,7 +16,7 @@
   const ctxLink = (c) => c ? `<a href="${href.habitat(c)}">${esc(CTX_LABEL[c] || c)}</a>` : `<span class="muted">No urban context</span>`;
   const kv = (pairs) => `<div class="kv">${pairs.filter(Boolean).map(([k, v]) => `<div><span class="k">${esc(k)}</span>${v}</div>`).join("")}</div>`;
   const gbp = (b) => b ? `${(b / 1e9).toFixed(b < 1e10 ? 2 : 1)} Gbp` : "—";
-  const setTitle = (t) => { document.title = `UMDB — ${t}`; };
+  const setTitle = (t) => { document.title = `UMA — ${t}`; };
   const count = (arr, fn) => { const m = new Map(); arr.forEach((x) => { const k = fn(x); if (k != null) m.set(k, (m.get(k) || 0) + 1); }); return m; };
 
   async function provenance(){

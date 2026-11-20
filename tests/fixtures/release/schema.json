@@ -1,0 +1,989 @@
+{
+  "schema_version": "1.1.0",
+  "tables": {
+    "projects": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "accession",
+          "type": "string"
+        },
+        {
+          "name": "uid",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "organism",
+          "type": "string"
+        },
+        {
+          "name": "data_type",
+          "type": "string"
+        },
+        {
+          "name": "center_name",
+          "type": "string"
+        },
+        {
+          "name": "submission_date",
+          "type": "string"
+        },
+        {
+          "name": "last_update",
+          "type": "string"
+        }
+      ]
+    },
+    "samples": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "accession",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "organism",
+          "type": "string"
+        },
+        {
+          "name": "collection_date_raw",
+          "type": "string"
+        },
+        {
+          "name": "collection_date",
+          "type": "date32[day]"
+        },
+        {
+          "name": "collection_year",
+          "type": "int64"
+        },
+        {
+          "name": "geo_loc_raw",
+          "type": "string"
+        },
+        {
+          "name": "country",
+          "type": "string"
+        },
+        {
+          "name": "region",
+          "type": "string"
+        },
+        {
+          "name": "city",
+          "type": "string"
+        },
+        {
+          "name": "city_status",
+          "type": "string"
+        },
+        {
+          "name": "lat",
+          "type": "double"
+        },
+        {
+          "name": "lon",
+          "type": "double"
+        },
+        {
+          "name": "location_resolution",
+          "type": "string"
+        },
+        {
+          "name": "location_validation",
+          "type": "string"
+        },
+        {
+          "name": "urban_status",
+          "type": "string"
+        },
+        {
+          "name": "urban_context",
+          "type": "string"
+        },
+        {
+          "name": "urban_contexts",
+          "type": "string"
+        },
+        {
+          "name": "environmental_sample",
+          "type": "int64"
+        },
+        {
+          "name": "eligibility_reason",
+          "type": "string"
+        },
+        {
+          "name": "eligibility_evidence",
+          "type": "string"
+        },
+        {
+          "name": "rules_version",
+          "type": "string"
+        },
+        {
+          "name": "isolation_source",
+          "type": "string"
+        },
+        {
+          "name": "env_broad_scale",
+          "type": "string"
+        },
+        {
+          "name": "env_local_scale",
+          "type": "string"
+        },
+        {
+          "name": "env_medium",
+          "type": "string"
+        },
+        {
+          "name": "host",
+          "type": "string"
+        },
+        {
+          "name": "attributes_json",
+          "type": "string"
+        }
+      ]
+    },
+    "experiments": {
+      "rows": 3,
+      "columns": [
+        {
+          "name": "accession",
+          "type": "string"
+        },
+        {
+          "name": "sra_uid",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "study_accession",
+          "type": "string"
+        },
+        {
+          "name": "project_accession",
+          "type": "string"
+        },
+        {
+          "name": "library_strategy",
+          "type": "string"
+        },
+        {
+          "name": "library_source",
+          "type": "string"
+        },
+        {
+          "name": "library_selection",
+          "type": "string"
+        },
+        {
+          "name": "library_layout",
+          "type": "string"
+        },
+        {
+          "name": "platform",
+          "type": "string"
+        },
+        {
+          "name": "instrument_model",
+          "type": "string"
+        },
+        {
+          "name": "assay_class",
+          "type": "string"
+        },
+        {
+          "name": "assay_tags",
+          "type": "string"
+        },
+        {
+          "name": "assay_confidence",
+          "type": "string"
+        }
+      ]
+    },
+    "runs": {
+      "rows": 3,
+      "columns": [
+        {
+          "name": "accession",
+          "type": "string"
+        },
+        {
+          "name": "experiment_accession",
+          "type": "string"
+        },
+        {
+          "name": "sample_accession",
+          "type": "string"
+        },
+        {
+          "name": "project_accession",
+          "type": "string"
+        },
+        {
+          "name": "release_date",
+          "type": "string"
+        },
+        {
+          "name": "load_date",
+          "type": "string"
+        },
+        {
+          "name": "release_year",
+          "type": "int64"
+        },
+        {
+          "name": "spots",
+          "type": "int64"
+        },
+        {
+          "name": "bases",
+          "type": "int64"
+        },
+        {
+          "name": "avg_length",
+          "type": "int64"
+        },
+        {
+          "name": "size_mb",
+          "type": "double"
+        },
+        {
+          "name": "scientific_name",
+          "type": "string"
+        },
+        {
+          "name": "tax_id",
+          "type": "string"
+        },
+        {
+          "name": "center_name",
+          "type": "string"
+        },
+        {
+          "name": "download_url",
+          "type": "string"
+        },
+        {
+          "name": "urban_status",
+          "type": "string"
+        },
+        {
+          "name": "eligibility_reason",
+          "type": "string"
+        },
+        {
+          "name": "ingested_utc",
+          "type": "string"
+        }
+      ]
+    },
+    "project_samples": {
+      "rows": 3,
+      "columns": [
+        {
+          "name": "project_accession",
+          "type": "string"
+        },
+        {
+          "name": "sample_accession",
+          "type": "string"
+        }
+      ]
+    },
+    "ai_annotations": {
+      "rows": 0,
+      "columns": [
+        {
+          "name": "run_accession",
+          "type": "string"
+        },
+        {
+          "name": "model",
+          "type": "string"
+        },
+        {
+          "name": "reviewed_utc",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "name": "urban_origin",
+          "type": "string"
+        },
+        {
+          "name": "metadata_sufficiency",
+          "type": "string"
+        },
+        {
+          "name": "confidence",
+          "type": "string"
+        },
+        {
+          "name": "environment_type",
+          "type": "string"
+        },
+        {
+          "name": "final_country",
+          "type": "string"
+        },
+        {
+          "name": "final_city",
+          "type": "string"
+        },
+        {
+          "name": "final_assay_class",
+          "type": "string"
+        },
+        {
+          "name": "reasoning_summary",
+          "type": "string"
+        },
+        {
+          "name": "evidence",
+          "type": "string"
+        }
+      ]
+    },
+    "countries": {
+      "rows": 6,
+      "columns": [
+        {
+          "name": "iso2",
+          "type": "string"
+        },
+        {
+          "name": "iso3",
+          "type": "string"
+        },
+        {
+          "name": "iso_numeric",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "continent",
+          "type": "string"
+        }
+      ]
+    },
+    "admin1": {
+      "rows": 8,
+      "columns": [
+        {
+          "name": "code",
+          "type": "string"
+        },
+        {
+          "name": "country_iso2",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "geonames_id",
+          "type": "int64"
+        }
+      ]
+    },
+    "places": {
+      "rows": 1,
+      "columns": [
+        {
+          "name": "geonames_id",
+          "type": "int64"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "country_iso2",
+          "type": "string"
+        },
+        {
+          "name": "admin1_code",
+          "type": "string"
+        },
+        {
+          "name": "lat",
+          "type": "double"
+        },
+        {
+          "name": "lon",
+          "type": "double"
+        },
+        {
+          "name": "population",
+          "type": "int64"
+        },
+        {
+          "name": "feature_code",
+          "type": "string"
+        }
+      ]
+    },
+    "sample_locations": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "sample_accession",
+          "type": "string"
+        },
+        {
+          "name": "country_iso2",
+          "type": "string"
+        },
+        {
+          "name": "country_status",
+          "type": "string"
+        },
+        {
+          "name": "admin1_code",
+          "type": "string"
+        },
+        {
+          "name": "place_id",
+          "type": "int64"
+        },
+        {
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "name": "method",
+          "type": "string"
+        },
+        {
+          "name": "distance_km",
+          "type": "double"
+        },
+        {
+          "name": "coord_decimals",
+          "type": "int64"
+        },
+        {
+          "name": "matched_text",
+          "type": "string"
+        },
+        {
+          "name": "note",
+          "type": "string"
+        },
+        {
+          "name": "geo_rules_version",
+          "type": "string"
+        }
+      ]
+    },
+    "umdb_samples": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "biosample_accession",
+          "type": "string"
+        },
+        {
+          "name": "bioproject_accessions",
+          "type": "string"
+        },
+        {
+          "name": "urban_status",
+          "type": "string"
+        },
+        {
+          "name": "urban_context",
+          "type": "string"
+        },
+        {
+          "name": "environmental_sample",
+          "type": "int64"
+        },
+        {
+          "name": "country",
+          "type": "string"
+        },
+        {
+          "name": "region",
+          "type": "string"
+        },
+        {
+          "name": "city",
+          "type": "string"
+        },
+        {
+          "name": "city_status",
+          "type": "string"
+        },
+        {
+          "name": "lat",
+          "type": "double"
+        },
+        {
+          "name": "lon",
+          "type": "double"
+        },
+        {
+          "name": "location_resolution",
+          "type": "string"
+        },
+        {
+          "name": "location_validation",
+          "type": "string"
+        },
+        {
+          "name": "collection_date",
+          "type": "date32[day]"
+        },
+        {
+          "name": "collection_year",
+          "type": "int64"
+        },
+        {
+          "name": "collection_date_raw",
+          "type": "string"
+        },
+        {
+          "name": "isolation_source",
+          "type": "string"
+        },
+        {
+          "name": "env_broad_scale",
+          "type": "string"
+        },
+        {
+          "name": "env_local_scale",
+          "type": "string"
+        },
+        {
+          "name": "env_medium",
+          "type": "string"
+        },
+        {
+          "name": "organism",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "run_count",
+          "type": "int64"
+        },
+        {
+          "name": "assay_classes",
+          "type": "string"
+        },
+        {
+          "name": "eligibility_reason",
+          "type": "string"
+        },
+        {
+          "name": "rules_version",
+          "type": "string"
+        },
+        {
+          "name": "country_iso2",
+          "type": "string"
+        },
+        {
+          "name": "country_name",
+          "type": "string"
+        },
+        {
+          "name": "country_status",
+          "type": "string"
+        },
+        {
+          "name": "admin1_code",
+          "type": "string"
+        },
+        {
+          "name": "admin1_name",
+          "type": "string"
+        },
+        {
+          "name": "place_id",
+          "type": "int64"
+        },
+        {
+          "name": "place_name",
+          "type": "string"
+        },
+        {
+          "name": "location_status",
+          "type": "string"
+        },
+        {
+          "name": "location_method",
+          "type": "string"
+        }
+      ]
+    },
+    "umdb_runs": {
+      "rows": 3,
+      "columns": [
+        {
+          "name": "run_accession",
+          "type": "string"
+        },
+        {
+          "name": "experiment_accession",
+          "type": "string"
+        },
+        {
+          "name": "biosample_accession",
+          "type": "string"
+        },
+        {
+          "name": "bioproject_accession",
+          "type": "string"
+        },
+        {
+          "name": "bioproject_title",
+          "type": "string"
+        },
+        {
+          "name": "assay_class",
+          "type": "string"
+        },
+        {
+          "name": "library_strategy",
+          "type": "string"
+        },
+        {
+          "name": "library_source",
+          "type": "string"
+        },
+        {
+          "name": "library_selection",
+          "type": "string"
+        },
+        {
+          "name": "library_layout",
+          "type": "string"
+        },
+        {
+          "name": "platform",
+          "type": "string"
+        },
+        {
+          "name": "instrument_model",
+          "type": "string"
+        },
+        {
+          "name": "release_date",
+          "type": "string"
+        },
+        {
+          "name": "release_year",
+          "type": "int64"
+        },
+        {
+          "name": "spots",
+          "type": "int64"
+        },
+        {
+          "name": "bases",
+          "type": "int64"
+        },
+        {
+          "name": "avg_length",
+          "type": "int64"
+        },
+        {
+          "name": "size_mb",
+          "type": "double"
+        },
+        {
+          "name": "scientific_name",
+          "type": "string"
+        },
+        {
+          "name": "center_name",
+          "type": "string"
+        },
+        {
+          "name": "download_url",
+          "type": "string"
+        },
+        {
+          "name": "run_urban_status",
+          "type": "string"
+        },
+        {
+          "name": "sample_urban_status",
+          "type": "string"
+        },
+        {
+          "name": "urban_context",
+          "type": "string"
+        },
+        {
+          "name": "country",
+          "type": "string"
+        },
+        {
+          "name": "region",
+          "type": "string"
+        },
+        {
+          "name": "city",
+          "type": "string"
+        },
+        {
+          "name": "lat",
+          "type": "double"
+        },
+        {
+          "name": "lon",
+          "type": "double"
+        },
+        {
+          "name": "collection_date",
+          "type": "date32[day]"
+        },
+        {
+          "name": "collection_year",
+          "type": "int64"
+        }
+      ]
+    },
+    "studies": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "bioproject",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "center_name",
+          "type": "string"
+        },
+        {
+          "name": "data_type",
+          "type": "string"
+        },
+        {
+          "name": "submission_date",
+          "type": "string"
+        },
+        {
+          "name": "biosamples",
+          "type": "int64"
+        },
+        {
+          "name": "runs",
+          "type": "int64"
+        },
+        {
+          "name": "bases",
+          "type": "int64"
+        },
+        {
+          "name": "first_release_year",
+          "type": "int64"
+        },
+        {
+          "name": "last_release_year",
+          "type": "int64"
+        }
+      ]
+    },
+    "locations": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "biosample",
+          "type": "string"
+        },
+        {
+          "name": "country_iso2",
+          "type": "string"
+        },
+        {
+          "name": "country",
+          "type": "string"
+        },
+        {
+          "name": "country_status",
+          "type": "string"
+        },
+        {
+          "name": "admin1_code",
+          "type": "string"
+        },
+        {
+          "name": "region",
+          "type": "string"
+        },
+        {
+          "name": "place_id",
+          "type": "int64"
+        },
+        {
+          "name": "place",
+          "type": "string"
+        },
+        {
+          "name": "place_population",
+          "type": "int64"
+        },
+        {
+          "name": "place_lat",
+          "type": "double"
+        },
+        {
+          "name": "place_lon",
+          "type": "double"
+        },
+        {
+          "name": "place_status",
+          "type": "string"
+        },
+        {
+          "name": "method",
+          "type": "string"
+        },
+        {
+          "name": "distance_km",
+          "type": "string"
+        },
+        {
+          "name": "coord_decimals",
+          "type": "string"
+        },
+        {
+          "name": "reported_lat",
+          "type": "string"
+        },
+        {
+          "name": "reported_lon",
+          "type": "string"
+        },
+        {
+          "name": "submitted_text",
+          "type": "string"
+        },
+        {
+          "name": "geo_rules_version",
+          "type": "string"
+        }
+      ]
+    },
+    "curation_evidence": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "biosample",
+          "type": "string"
+        },
+        {
+          "name": "urban_status",
+          "type": "string"
+        },
+        {
+          "name": "urban_context",
+          "type": "string"
+        },
+        {
+          "name": "urban_contexts",
+          "type": "string"
+        },
+        {
+          "name": "environmental_sample",
+          "type": "int64"
+        },
+        {
+          "name": "eligibility_reason",
+          "type": "string"
+        },
+        {
+          "name": "eligibility_evidence",
+          "type": "string"
+        },
+        {
+          "name": "rules_version",
+          "type": "string"
+        }
+      ]
+    },
+    "environmental_metadata": {
+      "rows": 2,
+      "columns": [
+        {
+          "name": "biosample",
+          "type": "string"
+        },
+        {
+          "name": "isolation_source",
+          "type": "string"
+        },
+        {
+          "name": "env_broad_scale",
+          "type": "string"
+        },
+        {
+          "name": "env_local_scale",
+          "type": "string"
+        },
+        {
+          "name": "env_medium",
+          "type": "string"
+        },
+        {
+          "name": "host",
+          "type": "string"
+        },
+        {
+          "name": "collection_date_raw",
+          "type": "string"
+        },
+        {
+          "name": "collection_date",
+          "type": "date32[day]"
+        },
+        {
+          "name": "collection_year",
+          "type": "int64"
+        },
+        {
+          "name": "attributes_json",
+          "type": "string"
+        }
+      ]
+    }
+  }
+}

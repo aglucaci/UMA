@@ -1,0 +1,247 @@
+{
+  "name": "UMDB: Urban Microbiome Database",
+  "contract": "umdb-release/1",
+  "version": "0.0.0-test",
+  "doi": null,
+  "url": "https://github.com/aglucaci/UMDB/releases/tag/v0.0.0-test",
+  "created_utc": "2026-11-20T12:53:24+00:00",
+  "schema_version": "1.1.0",
+  "database_built_utc": "2026-11-20T12:53:23+00:00",
+  "query_profiles_version": "2026.11.2",
+  "eligibility_rules_version": "2026.11.6",
+  "geo_rules_version": "2026.11.2",
+  "license": "CC-BY-NC-SA-4.0",
+  "licenses": {
+    "umdb_curation": "CC-BY-NC-SA-4.0: UMDB's annotations, eligibility tiers, validated locations, collections, derived tables, code and documentation",
+    "upstream_records": "Sequence data and submitter metadata remain governed by the INSDC policies of their source archives (NCBI SRA/BioSample/BioProject, ENA, DDBJ); UMDB redistributes metadata only",
+    "geonames": "Place names and identifiers from GeoNames, CC BY 4.0"
+  },
+  "counts": {
+    "projects": 2,
+    "samples": 2,
+    "experiments": 3,
+    "runs": 3,
+    "ai_annotations": 0,
+    "project_samples": 3,
+    "locations_verified": 1,
+    "locations_probable": 0,
+    "locations_ambiguous": 0,
+    "locations_conflicting": 0,
+    "locations_unresolved": 1
+  },
+  "collections": [
+    "global-wastewater",
+    "global-transit",
+    "urban-air",
+    "urban-greenspace",
+    "urban-virome",
+    "urban-resistome"
+  ],
+  "analysis": {
+    "pipeline": {
+      "name": "STRIGA",
+      "version": "0.2.0",
+      "commit": "abc1234"
+    },
+    "created_utc": "2026-11-20T00:00:00Z",
+    "database_verified": true,
+    "hypotheses": [
+      {
+        "id": "C1",
+        "track": "catalog",
+        "status": "supported"
+      }
+    ]
+  },
+  "files": {
+    "parquet/projects.parquet": {
+      "rows": 2,
+      "bytes": 2377,
+      "sha256": "28f4b7d6cfbdf1e08fbb8dd0dcc372efa8555d5f5a36a83e22e41865017fcabd"
+    },
+    "parquet/samples.parquet": {
+      "rows": 2,
+      "bytes": 11374,
+      "sha256": "8230285cacd7c4902d1e316b222c405c0d39cb1fa1a31719a6defbd1b27b72bf"
+    },
+    "parquet/experiments.parquet": {
+      "rows": 3,
+      "bytes": 3996,
+      "sha256": "cc48ec42889324dfd1c2389dce2c48b814ded023cb773c22e237fa28f76cfdc2"
+    },
+    "parquet/runs.parquet": {
+      "rows": 3,
+      "bytes": 5558,
+      "sha256": "4c1f438adb1746281af297f2b73cf3b543f72ff87b90219d6ec55834089caa04"
+    },
+    "parquet/project_samples.parquet": {
+      "rows": 3,
+      "bytes": 807,
+      "sha256": "c74d88462254a15765b6fdc6772439a8fc2b58116bf1411b70fa1672206c0d1e"
+    },
+    "parquet/ai_annotations.parquet": {
+      "rows": 0,
+      "bytes": 2385,
+      "sha256": "a824f65011063c6d1b40f4ea42a822afc6177d14ae81c04aa66e34d268c5c43b"
+    },
+    "parquet/countries.parquet": {
+      "rows": 6,
+      "bytes": 1622,
+      "sha256": "1cccf6a62806cee52762669c95c328279cff1db5748e64668ec81103b540e809"
+    },
+    "parquet/admin1.parquet": {
+      "rows": 8,
+      "bytes": 1473,
+      "sha256": "971afc04305571ebd0b4a4069571314edb9f40c8376112416aa87883d304a0cb"
+    },
+    "parquet/places.parquet": {
+      "rows": 1,
+      "bytes": 2510,
+      "sha256": "d00327a4ca233d727d8eea924198b0cbb6fb48843b40b8e771c9e4b93a827f2a"
+    },
+    "parquet/sample_locations.parquet": {
+      "rows": 2,
+      "bytes": 3481,
+      "sha256": "da617534d000d7f3b0201b5af2fd26214231fd74b3b2d638b0a14f8a4f213f58"
+    },
+    "parquet/umdb_samples.parquet": {
+      "rows": 2,
+      "bytes": 10346,
+      "sha256": "6a968e6a182ed6763f9b65d3e29401410f580e266fb88a5db589c315063dc08e"
+    },
+    "tsv/umdb_samples.tsv.gz": {
+      "rows": 2,
+      "bytes": 525,
+      "sha256": "49f95ea4cacb63266e0c4be65caa99f31a1e45c4ece7c461a70e4498059fd123"
+    },
+    "parquet/umdb_runs.parquet": {
+      "rows": 3,
+      "bytes": 8895,
+      "sha256": "e42872eb82a2bc657d94a2c10f310d0436b55e9419b2baa0d656d407a3e97986"
+    },
+    "tsv/umdb_runs.tsv.gz": {
+      "rows": 3,
+      "bytes": 464,
+      "sha256": "cae3b15f932e920fe60fb39717cc05cadebbeebd28e25baeae16b53830178730"
+    },
+    "parquet/studies.parquet": {
+      "rows": 2,
+      "bytes": 3093,
+      "sha256": "e6183ac357c58e8720fb43924966cba8db1f96c133cf4a6c7be96c6854e82dec"
+    },
+    "parquet/locations.parquet": {
+      "rows": 2,
+      "bytes": 5566,
+      "sha256": "42e02e80ff3b329a9e10e806bd72ed8088846335fd9c8a9f06f282a21e8a70a2"
+    },
+    "parquet/curation_evidence.parquet": {
+      "rows": 2,
+      "bytes": 5498,
+      "sha256": "e564500fcad669eed72e62715990ce79dfff30c98e72730f167fc6765e7e2c45"
+    },
+    "parquet/environmental_metadata.parquet": {
+      "rows": 2,
+      "bytes": 3549,
+      "sha256": "9e3be65ef319199cac5e887b2dc05cb7f318bc5d39505324a9ff5fefe096e701"
+    },
+    "indexes/coverage.json": {
+      "bytes": 288,
+      "sha256": "a430dc9716d7d255b97410f833cd866e2afdea4c55baa904011f559813b9a584"
+    },
+    "collections/global-wastewater.tsv.gz": {
+      "rows": 0,
+      "bytes": 108,
+      "sha256": "c73cd598f143d3710a71e6462862f16410f3ce21b5ac9dc3a301ee7460570bdb"
+    },
+    "collections/global-transit.tsv.gz": {
+      "rows": 2,
+      "bytes": 191,
+      "sha256": "a20ec0bb08e1e55d4c028d3ee5f77894dd9f08d6cba54a36a0df2ea735693252"
+    },
+    "collections/urban-air.tsv.gz": {
+      "rows": 0,
+      "bytes": 108,
+      "sha256": "c73cd598f143d3710a71e6462862f16410f3ce21b5ac9dc3a301ee7460570bdb"
+    },
+    "collections/urban-greenspace.tsv.gz": {
+      "rows": 0,
+      "bytes": 108,
+      "sha256": "c73cd598f143d3710a71e6462862f16410f3ce21b5ac9dc3a301ee7460570bdb"
+    },
+    "collections/urban-virome.tsv.gz": {
+      "rows": 0,
+      "bytes": 108,
+      "sha256": "c73cd598f143d3710a71e6462862f16410f3ce21b5ac9dc3a301ee7460570bdb"
+    },
+    "collections/urban-resistome.tsv.gz": {
+      "rows": 1,
+      "bytes": 178,
+      "sha256": "345bb7c370cc334769fedbb8e83e6b75b3d9b7761e50a0d289fd8d2f90035d4d"
+    },
+    "collections/collections.json": {
+      "bytes": 5867,
+      "sha256": "16d6f4b75074b11c103aea8ced6eff92c3d779c08063ff8945e7ea9d0cb4214d"
+    },
+    "documentation/DATA_DICTIONARY.md": {
+      "bytes": 26622,
+      "sha256": "7b08a2839ff8928cb76a3ebe81c61b5c6baa2413676460794499513d9a4ffd60"
+    },
+    "documentation/ARCHITECTURE.md": {
+      "bytes": 15244,
+      "sha256": "ffbca7a9238e43eaca51766e0d657a98861fe4866081da01416e2c1c3b3c3929"
+    },
+    "documentation/INCLUSION_CRITERIA.md": {
+      "bytes": 20935,
+      "sha256": "01e6bf1a21645dc339de5349e9d5d70be285c2cd7ac2faee1a57728c1244a2fa"
+    },
+    "documentation/CURATION.md": {
+      "bytes": 9308,
+      "sha256": "5df454b39ddeaa8fca8e701a1d6466cdf349e408f64e935a8786ae417791f709"
+    },
+    "documentation/LICENSE": {
+      "bytes": 21479,
+      "sha256": "18f71b8632523a7f617bd73a3f679aaf45f2c01bac877d652edcc858cfe67730"
+    },
+    "documentation/cohort-templates.json": {
+      "bytes": 4154,
+      "sha256": "b30683a7cc195cf84bc90b9288c702e8c7cc278d281b5eb1bef06c63d705ee50"
+    },
+    "reference/geonames/countryInfo.txt": {
+      "bytes": 242,
+      "sha256": "776da72cda31c831430d3d8f7f35d981d182775512abc06cac33ff7b160e4256"
+    },
+    "reference/geonames/cities500.zip": {
+      "bytes": 1221,
+      "sha256": "70e52845f353f71ce42c0d78670ba8253b1e193f7b11a04942804c4727468309"
+    },
+    "analysis/report.md": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "analysis/hypotheses_status.tsv": {
+      "bytes": 79,
+      "sha256": "420152db02765cd135c7cc1f4a36b8711e69ef1a7ab8de9abd59b425b3bab0ae"
+    },
+    "analysis/striga_manifest.json": {
+      "bytes": 366,
+      "sha256": "17f27a4dcb50edf3c8c29e9920659c88fcf8b0cb41c3bc12238d3e228b2f2922"
+    },
+    "analysis/snapshot/snapshot.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "analysis/hypotheses/C1/summary.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "schema.json": {
+      "bytes": 19618,
+      "sha256": "18851959bb2e180eb5661aca4ce918a94bb57f29255004b85c9c7b3edbc7046a"
+    },
+    "umdb.sqlite.gz": {
+      "bytes": 9234,
+      "sha256": "0232afacf3e8620bcbb76ed00de2d63fc1a615eb71dc9ebf0b60fd6cfad8c3a0",
+      "note": "fixture recompressed with gzip"
+    }
+  }
+}

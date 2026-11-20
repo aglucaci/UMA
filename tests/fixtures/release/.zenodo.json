@@ -1,0 +1,37 @@
+{
+  "title": "UMDB: Urban Microbiome Database, release 0.0.0-test",
+  "upload_type": "dataset",
+  "version": "0.0.0-test",
+  "creators": [
+    {
+      "name": "Lucaci, Alexander G."
+    }
+  ],
+  "description": "Versioned release of UMDB, a rule-screened catalog of public urban microbiome sequencing metadata: 3 runs, 2 BioSamples and 2 BioProjects. Database built 2026-11-20T12:53:23+00:00, eligibility rules 2026.11.6. Includes Parquet tables, the SQLite database, curated collections, the GeoNames reference and documentation. Includes analyses by STRIGA 0.2.0 (https://github.com/aglucaci/STRIGA) run on this exact catalog. Browse it at https://aglucaci.github.io/UMA/.",
+  "license": "cc-by-nc-sa-4.0",
+  "keywords": [
+    "urban microbiome",
+    "metagenomics",
+    "wastewater",
+    "built environment",
+    "SRA",
+    "metadata"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/aglucaci/UMDB",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/aglucaci/STRIGA",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://aglucaci.github.io/UMA/",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
   // A cohort is {id, name, created, definition, balance?} where definition is either
   // {filters: <Explorer filters>} or {op: "union"|"intersection"|"difference", a: <definition>, b: <definition>}.
   // This is the same document `umdb cohort export cohort.json` reads, and the research
-  // package written here has the same files as the Python exporter (scripts/umdb_harvester/cohorts.py).
+  // package written here has the same files as the Python exporter (cohorts.py in the UMDB repository).
   // Balancing uses the same seeded shuffle (mulberry32) in both, so the samples match.
   const U = window.UMDB, X = window.UMDBUI;
   const { esc, fmt } = X;
@@ -145,7 +145,8 @@
     const m = await U.fetchManifest();
     const release = { database_schema_version: m.database_schema_version, database_built_utc: m.database_built_utc,
                       eligibility_rules_version: m.eligibility_rules_version, geo_rules_version: m.geo_rules_version,
-                      query_profiles_version: m.query_profiles_version, site_generated_utc: m.generated_utc };
+                      query_profiles_version: m.query_profiles_version, site_generated_utc: m.generated_utc,
+                      umdb_release: (m.release || {}).version || null, umdb_release_doi: (m.release || {}).doi || null };
     const summ = summary(samples, runs);
     const definition = { ...cohort.definition, ...(cohort.balance ? { balance: cohort.balance } : {}) };
     const manifest = {
@@ -178,7 +179,7 @@
       "samplesheet.csv": sheet.join("\n") + "\n",
       "cohort_summary.json": JSON.stringify(summ, null, 2) + "\n",
       "analysis.py": T.py, "analysis.R": T.r,
-      "CITATION.bib": `@misc{umdb,\n  title  = {UMDB: Urban Microbiome Database},\n  author = {Lucaci, Alexander G.},\n  year   = {${built.slice(0, 4) || "2026"}},\n  url    = {https://aglucaci.github.io/UMDB/},\n  note   = {Database built ${built || "unknown"}; eligibility rules ${release.eligibility_rules_version || "?"}}\n}\n`,
+      "CITATION.bib": `@misc{umdb,\n  title  = {UMDB: Urban Microbiome Database},\n  author = {Lucaci, Alexander G.},\n  year   = {${built.slice(0, 4) || "2026"}},\n  url    = {https://aglucaci.github.io/UMA/},\n${release.umdb_release_doi ? `  doi    = {${release.umdb_release_doi}},\n` : ""}  note   = {${release.umdb_release ? `UMDB release ${release.umdb_release}; ` : ""}database built ${built || "unknown"}; eligibility rules ${release.eligibility_rules_version || "?"}}\n}\n`,
     };
   }
 

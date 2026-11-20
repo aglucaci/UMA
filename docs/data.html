@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>UMDB — Data Access</title>
+  <title>UMA — Data Access</title>
   <meta name="description" content="Download locations, schema guidance, and reuse notes for the UMDB database." />
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon_16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon_32.png" />
@@ -21,8 +21,8 @@
       <a class="site-brand" href="./index.html">
         <div class="site-brand-mark"><img src="./assets/umdb-logo.png" alt="UMDB logo" /></div>
         <div class="site-brand-copy">
-          <strong>UMDB</strong>
-          <span>Urban Microbiome Database</span>
+          <strong>UMA</strong>
+          <span>Browser for the Urban Microbiome Database</span>
         </div>
       </a>
       <div class="site-links">
@@ -144,7 +144,7 @@
     <section class="section">
       <div class="section-header">
         <h2>Versioned Releases And Programmatic Access</h2>
-        <p>Every release is an immutable folder with checksums, suitable for a DOI. Query it with DuckDB, Python, R or SQLite; build cohorts from the command line exactly as the Workspace does.</p>
+        <p>This site shows one versioned UMDB release (named at the bottom of every page). Each release is an immutable folder with checksums, published on <a href="https://github.com/aglucaci/UMDB/releases">GitHub Releases</a> as one <span class="mono">umdb-&lt;version&gt;.tar.gz</span>, and includes the <a href="https://github.com/aglucaci/STRIGA">STRIGA</a> analyses of exactly that catalog. Query it with DuckDB, Python, R or SQLite; build cohorts from the command line exactly as the Workspace does.</p>
       </div>
       <div class="split">
         <div class="panel">
@@ -159,8 +159,12 @@
 │                          locations, studies, curation_evidence,
 │                          environmental_metadata, umdb_samples, umdb_runs …
 ├── tsv/                   umdb_samples.tsv.gz, umdb_runs.tsv.gz
-├── indexes/               summary, coverage (per country), projects, geo
+├── indexes/coverage.json  urban samples, studies and places per country
 ├── collections/           curated collections and their run lists
+├── reference/geonames/    the gazetteer locations were validated against
+├── analysis/              STRIGA results for this catalog: report, hypothesis
+│                          statuses and tables, cohort, covariates (World Bank,
+│                          GeoNames, OpenFlights …) with their checksums
 └── documentation/         data dictionary, methods, inclusion criteria</pre>
         </div>
         <div class="panel">
@@ -173,7 +177,7 @@ WHERE urban_status = 'confirmed_urban'
   AND assay_classes LIKE '%WGS%'
 GROUP BY 1 ORDER BY 2 DESC;
 
-# A reproducible research package from the command line
+# A reproducible research package (UMDB command line)
 umdb cohort collection global-wastewater --max-per-cell 25 --seed 20261119
 umdb cohort export my_cohort.cohort.json   # saved from the Workspace</pre>
         </div>
@@ -233,8 +237,8 @@ umdb cohort export my_cohort.cohort.json   # saved from the Workspace</pre>
           ["db/cube.json", "Sequencing runs aggregated by the same dimensions (one assay and project per run), with gigabases.", "Run-level analysis; the explorer, analytics and map."],
           ["db/projects.json", "One row per BioProject: title, centre, data type, submission date, run and BioSample counts, year span.", "Project-level browsing and linking."],
           ["db/p/&lt;BioProject&gt;.json", "One project's BioSamples (accepted location with its validation status next to the submitted text, eligibility, environment fields) and runs (assay, library, platform, size), loaded when a project is opened.", "Per-project reuse without downloading the catalog."],
-          ["db/manifest.json", "Build time, schema, query-profile, eligibility-rule and location-rule versions, GeoNames download date, counts and file sizes.", "Provenance and release sanity checks."],
-          ["latest_srr.json", "Recently added runs.", "Status widgets and monitoring views."]
+          ["db/manifest.json", "The UMDB release shown, build time, schema, query-profile, eligibility-rule and location-rule versions, GeoNames download date, counts and file sizes.", "Provenance and release sanity checks."],
+          ["db/analysis.json", "The STRIGA results bundled with the release: every hypothesis with its status, one-line result and caveats, and the STRIGA version that produced them.", "The Findings section of Analytics; citing results."]
         ];
         renderTable(primaryFilesTable,
           ["File", "Purpose", "Audience"],
@@ -243,7 +247,7 @@ umdb cohort export my_cohort.cohort.json   # saved from the Workspace</pre>
             purpose, who
           ]).concat([[
             `<a href="https://github.com/aglucaci/UMDB/releases"><span class="mono">GitHub Releases</span></a>`,
-            "Versioned research releases: every table as Parquet and gzipped TSV with schema, manifest and checksums, plus the full harvested catalog (JSON Lines).",
+            "Versioned UMDB releases: every table as Parquet and gzipped TSV, the SQLite database, collections, the GeoNames reference and the STRIGA analyses, with schema, manifest and checksums. This site is built from one of them.",
             "Analysis in DuckDB, R, Python or spreadsheets; reproducible snapshots."
           ]]),
           "No public file entries are available."

@@ -1,0 +1,52 @@
+# Rebuild the website data (docs/db/) from a published UMDB release and commit it;
+# GitHub Pages then publishes docs/. Run it by hand after UMDB publishes a release,
+# or from UMDB with a repository_dispatch event of type "umdb-release"
+# (client_payload: {"version": "1.0.0", "doi": "10.5281/zenodo.…"}).
+name: Build site from a UMDB release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: UMDB release version (tag without the v), or latest
+        default: latest
+        required: true
+      doi:
+        description: DOI of the release, if minted after it was built (optional)
+        required: false
+  repository_dispatch:
+    types: [umdb-release]
+concurrency:
+  group: build-site
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      VERSION: ${{ github.event.inputs.version || github.event.client_payload.version || 'latest' }}
+      DOI: ${{ github.event.inputs.doi || github.event.client_payload.doi || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Tests
+        run: python -m unittest discover tests
+      - name: Build docs/db from the release
+        run: |
+          set -euo pipefail
+          args=()
+          [ -n "$DOI" ] && args+=(--doi "$DOI")
+          bin/uma build "$VERSION" "${args[@]}"
+          python -c "import json; m = json.load(open('docs/db/manifest.json')); print('Built from UMDB release', m['release']['version'])"
+      - name: Commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs
+          v=$(python -c "import json; print(json.load(open('docs/db/manifest.json'))['release']['version'])")
+          git commit -m "Site data from UMDB release $v" || { echo "No changes"; exit 0; }
+          git push

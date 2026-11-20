@@ -1,0 +1,1 @@
+{"contract": "striga-results/1", "pipeline": {"name": "STRIGA", "version": "0.2.0", "commit": "abc1234"}, "input": {"database_sha256": "86a0875aa36f444cc63d6e12bf24c1087ffe72ce27854fcd3dc8afad4c501a07", "built_utc": "2026-01-01", "rows": {"samples": 2}}, "created_utc": "2026-11-20T00:00:00Z", "hypotheses": [{"id": "C1", "track": "catalog", "status": "supported"}]}
