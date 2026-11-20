@@ -1,7 +1,7 @@
 """uma: build and preview the UMA website from a UMDB data release.
 
   uma fetch [VERSION|latest]     download a release from github.com/aglucaci/UMDB into releases/<version>/
-  uma build RELEASE [--doi DOI]  write docs/db/ from a release folder, a version, or 'latest'
+  uma build RELEASE [--doi DOI]  write docs/data/ from a release folder, a version, or 'latest'
   uma serve [--port 8765]        preview docs/ at http://localhost:8765
   uma test                       run the unit tests
 """
@@ -41,9 +41,9 @@ def main(argv=None) -> None:
     f = sub.add_parser("fetch", help="download a UMDB release from GitHub Releases")
     f.add_argument("version", nargs="?", default="latest")
     f.add_argument("--repo", default="aglucaci/UMDB")
-    b = sub.add_parser("build", help="build docs/db/ from a UMDB release")
+    b = sub.add_parser("build", help="build docs/data/ from a UMDB release")
     b.add_argument("release", help="release folder, a version (fetched if needed) or 'latest'")
-    b.add_argument("--out", default=os.path.join("docs", "db"))
+    b.add_argument("--out", default=os.path.join("docs", "data"))
     b.add_argument("--repo", default="aglucaci/UMDB")
     b.add_argument("--doi", default="", help="DOI of the release, when it was minted after the release was built")
     s = sub.add_parser("serve", help="preview docs/")

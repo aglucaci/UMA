@@ -1,13 +1,12 @@
 """Reading a UMDB data release (contract umdb-release/1).
 
-A release folder, as written by `umdb release` in the UMDB repository, holds:
+A release folder, as written by `umdb release` in the UMDB repository, holds (among other files)
+what UMA reads:
 
-  manifest.json                     version, DOI, counts, licences, file checksums, `analysis`
+  manifest.json                     contract, version, DOI, dates, counts, licences, file checksums
   umdb.sqlite.zst | umdb.sqlite.gz  the catalog database (or an uncompressed umdb.sqlite)
-  collections/                      collections.json and <slug>.tsv.gz run lists
-  documentation/cohort-templates.json  research-package templates (README, scripts) for the Workspace
-  reference/geonames/countryInfo.txt   country populations (GeoNames, CC BY 4.0)
-  analysis/                         STRIGA results (striga_manifest.json, hypotheses_status.tsv, ...), optional
+  analysis/                         STRIGA results (striga_manifest.json, hypotheses_status.tsv, report.json,
+                                    hypotheses/<ID>/), optional
 
 UMA only reads releases; it never talks to NCBI or to the UMDB harvester.
 """

@@ -1,23 +1,23 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><title>UMA</title>
-<script>
-// GitHub Pages serves this page for unknown paths. Map UMDB's record routes
-// (/study/PRJNA271013, /sample/SAMN…, /run/SRR…, /city/5128581, /country/US,
-// /habitat/municipal-wastewater, /collection/global-wastewater) to the static pages.
-(function(){
-  var routes = { study: ["study.html", "acc"], sample: ["sample.html", "acc"], run: ["run.html", "acc"], city: ["city.html", "id"],
-                 country: ["country.html", "iso"], habitat: ["habitat.html", "id"], collection: ["collections.html", "slug"] };
-  var parts = location.pathname.split("/").filter(Boolean);
-  for (var i = 0; i < parts.length - 1; i++){
-    var r = routes[parts[i]];
-    if (r){
-      var base = "/" + parts.slice(0, i).join("/") + (i ? "/" : "");
-      location.replace(base + r[0] + "?" + r[1] + "=" + encodeURIComponent(decodeURIComponent(parts[i + 1])));
-      return;
-    }
-  }
-  document.addEventListener("DOMContentLoaded", function(){ document.getElementById("msg").hidden = false; });
-})();
-</script>
-<link rel="stylesheet" href="/UMDB/assets/site.css" /></head>
-<body><div class="site-shell"><p id="msg" hidden>Page not found. <a href="/UMDB/">UMDB home</a> · <a href="/UMDB/explorer.html">Explorer</a></p></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Not found — UMA</title>
+  <link rel="stylesheet" href="./assets/uma.css">
+  <script>
+    // Short routes on GitHub Pages: /UMA/study/PRJNA271013 -> study.html?acc=PRJNA271013, and
+    // /finding/C1, /sample/…, /run/…, /place/<GeoNames id>, /country/US.
+    (function(){
+      var base = location.pathname.indexOf("/UMA/") === 0 ? "/UMA/" : "/";
+      var parts = location.pathname.slice(base.length).split("/").filter(Boolean);
+      var map = { study: "study.html?acc=", sample: "sample.html?acc=", run: "run.html?acc=", place: "place.html?id=",
+                  country: "place.html?country=", finding: "findings.html?id=" };
+      if (parts.length === 2 && map[parts[0]]) location.replace(base + map[parts[0]] + encodeURIComponent(parts[1]));
+    })();
+  </script>
+</head>
+<body>
+<main class="wrap" style="padding:40px 20px"><h1>Page not found</h1><p><a href="./index.html">Go to the overview</a> or <a href="./search.html">search the release</a>.</p></main>
+</body>
+</html>
