@@ -1,0 +1,199 @@
+technology	country_iso2	global_intro_year	first_year	lag_years	adopted	gdp_pc
+long_read	AE	2021	2026.0	5.0	True	41605.4138706908
+long_read	AQ	2021	2024.0	3.0	True	
+long_read	AR	2021	2025.0	4.0	True	12774.3506596628
+long_read	AT	2021	2017.0	0.0	True	45958.8250071261
+long_read	AU	2021	2021.0	0.0	True	61486.38147544
+long_read	BE	2021	2025.0	4.0	True	45019.6989654607
+long_read	BR	2021			False	9566.74518687619
+long_read	CA	2021	2021.0	0.0	True	45061.3864587285
+long_read	CH	2021	2019.0	0.0	True	93018.3768706697
+long_read	CL	2021	2020.0	0.0	True	14616.9287938028
+long_read	CM	2021			False	1480.73097431993
+long_read	CN	2021	2017.0	0.0	True	13119.1076099516
+long_read	CO	2021			False	6865.31283944628
+long_read	CR	2021			False	15052.9149924743
+long_read	CY	2021	2026.0	5.0	True	32757.541015625
+long_read	CZ	2021	2026.0	5.0	True	20449.1135911311
+long_read	DE	2021	2019.0	0.0	True	44027.7631554469
+long_read	DK	2021	2019.0	0.0	True	60772.8624276041
+long_read	EE	2021	2024.0	3.0	True	20078.1397620993
+long_read	ES	2021	2022.0	1.0	True	29245.2192451729
+long_read	FI	2021	2025.0	4.0	True	45075.1684940688
+long_read	FR	2021	2024.0	3.0	True	39683.3953489029
+long_read	GB	2021	2019.0	0.0	True	47900.9680144146
+long_read	GL	2021			False	49929.7755428605
+long_read	GR	2021			False	21494.6856060599
+long_read	GU	2021			False	34627.9862781837
+long_read	HK	2021	2019.0	0.0	True	44734.4365296835
+long_read	HR	2021			False	17854.3262648378
+long_read	HU	2021			False	16543.1049095203
+long_read	IE	2021	2024.0	3.0	True	94474.9879707069
+long_read	IL	2021	2026.0	5.0	True	41882.0474698252
+long_read	IN	2021	2019.0	0.0	True	2366.8328910323
+long_read	IT	2021	2026.0	5.0	True	34508.1235191237
+long_read	JP	2021	2021.0	0.0	True	37976.6371788298
+long_read	KE	2021			False	1858.87650030024
+long_read	KR	2021	2026.0	5.0	True	37048.4264001496
+long_read	LU	2021			False	104147.111291588
+long_read	MX	2021	2022.0	1.0	True	10284.0336925726
+long_read	MY	2021	2025.0	4.0	True	11883.79127749
+long_read	NG	2021	2021.0	0.0	True	2324.59702394542
+long_read	NL	2021	2020.0	0.0	True	51174.8997297902
+long_read	NO	2021	2016.0	0.0	True	83487.1332276928
+long_read	NP	2021	2021.0	0.0	True	1179.95499311034
+long_read	NZ	2021			False	41415.4670639187
+long_read	PA	2021	2025.0	4.0	True	17122.7168795289
+long_read	PE	2021	2026.0	5.0	True	6732.27773809578
+long_read	PH	2021			False	3926.14900894495
+long_read	PL	2021	2023.0	2.0	True	18000.5034591285
+long_read	PR	2021			False	30978.7473320338
+long_read	PS	2021			False	2258.20698667764
+long_read	PT	2021	2024.0	3.0	True	22663.993126225
+long_read	RS	2021	2025.0	4.0	True	8580.26105823259
+long_read	RU	2021	2022.0	1.0	True	11092.6337890625
+long_read	SA	2021	2024.0	3.0	True	25123.0122060281
+long_read	SE	2021	2018.0	0.0	True	54316.2619329718
+long_read	SG	2021	2025.0	4.0	True	68129.6960402288
+long_read	SJ	2021			False	
+long_read	SK	2021	2026.0	5.0	True	19776.1758069498
+long_read	TH	2021	2022.0	1.0	True	6616.58539335928
+long_read	TW	2021	2026.0	5.0	True	
+long_read	UA	2021			False	2226.05810546875
+long_read	US	2021	2020.0	0.0	True	66856.5131698371
+long_read	UY	2021	2026.0	5.0	True	19024.1204266155
+long_read	VI	2021			False	36983.431060272
+long_read	VN	2021	2024.0	3.0	True	4012.50779921084
+long_read	ZA	2021	2024.0	3.0	True	5715.47531469148
+illumina_novaseq	AE	2019			False	41605.4138706908
+illumina_novaseq	AQ	2019			False	
+illumina_novaseq	AR	2019	2023.0	4.0	True	12774.3506596628
+illumina_novaseq	AT	2019	2024.0	5.0	True	45958.8250071261
+illumina_novaseq	AU	2019	2023.0	4.0	True	61486.38147544
+illumina_novaseq	BE	2019	2024.0	5.0	True	45019.6989654607
+illumina_novaseq	BR	2019	2023.0	4.0	True	9566.74518687619
+illumina_novaseq	CA	2019	2020.0	1.0	True	45061.3864587285
+illumina_novaseq	CH	2019	2021.0	2.0	True	93018.3768706697
+illumina_novaseq	CL	2019	2023.0	4.0	True	14616.9287938028
+illumina_novaseq	CM	2019	2022.0	3.0	True	1480.73097431993
+illumina_novaseq	CN	2019	2019.0	0.0	True	13119.1076099516
+illumina_novaseq	CO	2019	2021.0	2.0	True	6865.31283944628
+illumina_novaseq	CR	2019	2025.0	6.0	True	15052.9149924743
+illumina_novaseq	CY	2019	2025.0	6.0	True	32757.541015625
+illumina_novaseq	CZ	2019	2025.0	6.0	True	20449.1135911311
+illumina_novaseq	DE	2019	2020.0	1.0	True	44027.7631554469
+illumina_novaseq	DK	2019	2020.0	1.0	True	60772.8624276041
+illumina_novaseq	EE	2019			False	20078.1397620993
+illumina_novaseq	ES	2019	2020.0	1.0	True	29245.2192451729
+illumina_novaseq	FI	2019	2023.0	4.0	True	45075.1684940688
+illumina_novaseq	FR	2019	2020.0	1.0	True	39683.3953489029
+illumina_novaseq	GB	2019	2023.0	4.0	True	47900.9680144146
+illumina_novaseq	GL	2019			False	49929.7755428605
+illumina_novaseq	GR	2019	2022.0	3.0	True	21494.6856060599
+illumina_novaseq	GU	2019	2021.0	2.0	True	34627.9862781837
+illumina_novaseq	HK	2019	2021.0	2.0	True	44734.4365296835
+illumina_novaseq	HR	2019	2021.0	2.0	True	17854.3262648378
+illumina_novaseq	HU	2019	2024.0	5.0	True	16543.1049095203
+illumina_novaseq	IE	2019	2024.0	5.0	True	94474.9879707069
+illumina_novaseq	IL	2019	2024.0	5.0	True	41882.0474698252
+illumina_novaseq	IN	2019	2022.0	3.0	True	2366.8328910323
+illumina_novaseq	IT	2019	2021.0	2.0	True	34508.1235191237
+illumina_novaseq	JP	2019	2022.0	3.0	True	37976.6371788298
+illumina_novaseq	KE	2019	2025.0	6.0	True	1858.87650030024
+illumina_novaseq	KR	2019	2024.0	5.0	True	37048.4264001496
+illumina_novaseq	LU	2019	2026.0	7.0	True	104147.111291588
+illumina_novaseq	MX	2019	2024.0	5.0	True	10284.0336925726
+illumina_novaseq	MY	2019	2024.0	5.0	True	11883.79127749
+illumina_novaseq	NG	2019	2023.0	4.0	True	2324.59702394542
+illumina_novaseq	NL	2019	2021.0	2.0	True	51174.8997297902
+illumina_novaseq	NO	2019	2022.0	3.0	True	83487.1332276928
+illumina_novaseq	NP	2019	2025.0	6.0	True	1179.95499311034
+illumina_novaseq	NZ	2019	2023.0	4.0	True	41415.4670639187
+illumina_novaseq	PA	2019	2025.0	6.0	True	17122.7168795289
+illumina_novaseq	PE	2019	2026.0	7.0	True	6732.27773809578
+illumina_novaseq	PH	2019	2023.0	4.0	True	3926.14900894495
+illumina_novaseq	PL	2019	2024.0	5.0	True	18000.5034591285
+illumina_novaseq	PR	2019	2020.0	1.0	True	30978.7473320338
+illumina_novaseq	PS	2019			False	2258.20698667764
+illumina_novaseq	PT	2019			False	22663.993126225
+illumina_novaseq	RS	2019	2025.0	6.0	True	8580.26105823259
+illumina_novaseq	RU	2019			False	11092.6337890625
+illumina_novaseq	SA	2019	2024.0	5.0	True	25123.0122060281
+illumina_novaseq	SE	2019	2019.0	0.0	True	54316.2619329718
+illumina_novaseq	SG	2019	2024.0	5.0	True	68129.6960402288
+illumina_novaseq	SJ	2019	2024.0	5.0	True	
+illumina_novaseq	SK	2019			False	19776.1758069498
+illumina_novaseq	TH	2019	2025.0	6.0	True	6616.58539335928
+illumina_novaseq	TW	2019	2024.0	5.0	True	
+illumina_novaseq	UA	2019			False	2226.05810546875
+illumina_novaseq	US	2019	2020.0	1.0	True	66856.5131698371
+illumina_novaseq	UY	2019			False	19024.1204266155
+illumina_novaseq	VI	2019	2021.0	2.0	True	36983.431060272
+illumina_novaseq	VN	2019			False	4012.50779921084
+illumina_novaseq	ZA	2019	2024.0	5.0	True	5715.47531469148
+dnbseq_bgi	AE	2023	2024.0	1.0	True	41605.4138706908
+dnbseq_bgi	AQ	2023			False	
+dnbseq_bgi	AR	2023			False	12774.3506596628
+dnbseq_bgi	AT	2023			False	45958.8250071261
+dnbseq_bgi	AU	2023	2021.0	0.0	True	61486.38147544
+dnbseq_bgi	BE	2023	2025.0	2.0	True	45019.6989654607
+dnbseq_bgi	BR	2023			False	9566.74518687619
+dnbseq_bgi	CA	2023			False	45061.3864587285
+dnbseq_bgi	CH	2023			False	93018.3768706697
+dnbseq_bgi	CL	2023			False	14616.9287938028
+dnbseq_bgi	CM	2023			False	1480.73097431993
+dnbseq_bgi	CN	2023	2021.0	0.0	True	13119.1076099516
+dnbseq_bgi	CO	2023			False	6865.31283944628
+dnbseq_bgi	CR	2023			False	15052.9149924743
+dnbseq_bgi	CY	2023			False	32757.541015625
+dnbseq_bgi	CZ	2023			False	20449.1135911311
+dnbseq_bgi	DE	2023			False	44027.7631554469
+dnbseq_bgi	DK	2023			False	60772.8624276041
+dnbseq_bgi	EE	2023			False	20078.1397620993
+dnbseq_bgi	ES	2023			False	29245.2192451729
+dnbseq_bgi	FI	2023	2026.0	3.0	True	45075.1684940688
+dnbseq_bgi	FR	2023			False	39683.3953489029
+dnbseq_bgi	GB	2023			False	47900.9680144146
+dnbseq_bgi	GL	2023			False	49929.7755428605
+dnbseq_bgi	GR	2023			False	21494.6856060599
+dnbseq_bgi	GU	2023			False	34627.9862781837
+dnbseq_bgi	HK	2023			False	44734.4365296835
+dnbseq_bgi	HR	2023			False	17854.3262648378
+dnbseq_bgi	HU	2023			False	16543.1049095203
+dnbseq_bgi	IE	2023	2026.0	3.0	True	94474.9879707069
+dnbseq_bgi	IL	2023			False	41882.0474698252
+dnbseq_bgi	IN	2023	2021.0	0.0	True	2366.8328910323
+dnbseq_bgi	IT	2023			False	34508.1235191237
+dnbseq_bgi	JP	2023	2022.0	0.0	True	37976.6371788298
+dnbseq_bgi	KE	2023			False	1858.87650030024
+dnbseq_bgi	KR	2023	2026.0	3.0	True	37048.4264001496
+dnbseq_bgi	LU	2023			False	104147.111291588
+dnbseq_bgi	MX	2023			False	10284.0336925726
+dnbseq_bgi	MY	2023			False	11883.79127749
+dnbseq_bgi	NG	2023			False	2324.59702394542
+dnbseq_bgi	NL	2023			False	51174.8997297902
+dnbseq_bgi	NO	2023			False	83487.1332276928
+dnbseq_bgi	NP	2023			False	1179.95499311034
+dnbseq_bgi	NZ	2023			False	41415.4670639187
+dnbseq_bgi	PA	2023			False	17122.7168795289
+dnbseq_bgi	PE	2023			False	6732.27773809578
+dnbseq_bgi	PH	2023			False	3926.14900894495
+dnbseq_bgi	PL	2023			False	18000.5034591285
+dnbseq_bgi	PR	2023			False	30978.7473320338
+dnbseq_bgi	PS	2023			False	2258.20698667764
+dnbseq_bgi	PT	2023			False	22663.993126225
+dnbseq_bgi	RS	2023			False	8580.26105823259
+dnbseq_bgi	RU	2023	2023.0	0.0	True	11092.6337890625
+dnbseq_bgi	SA	2023	2026.0	3.0	True	25123.0122060281
+dnbseq_bgi	SE	2023			False	54316.2619329718
+dnbseq_bgi	SG	2023			False	68129.6960402288
+dnbseq_bgi	SJ	2023			False	
+dnbseq_bgi	SK	2023			False	19776.1758069498
+dnbseq_bgi	TH	2023			False	6616.58539335928
+dnbseq_bgi	TW	2023			False	
+dnbseq_bgi	UA	2023			False	2226.05810546875
+dnbseq_bgi	US	2023	2022.0	0.0	True	66856.5131698371
+dnbseq_bgi	UY	2023			False	19024.1204266155
+dnbseq_bgi	VI	2023			False	36983.431060272
+dnbseq_bgi	VN	2023			False	4012.50779921084
+dnbseq_bgi	ZA	2023	2023.0	0.0	True	5715.47531469148

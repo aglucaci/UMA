@@ -1,0 +1,10 @@
+primary_assay	samples	has_place	has_coordinates	has_collection_date	flag_date_future	flag_date_after_release	flag_date_implausible	flag_coords_conflict
+16S	57045	64.53	65.9	74.32	0.0	0.0	0.0	1.46
+18S	1924	36.07	52.65	72.92	0.0	0.0	0.0	0.57
+Amplicon	160508	51.17	50.48	64.11	0.07	0.03	0.01	1.25
+ITS	11748	37.6	54.52	73.85	0.0	0.0	0.04	0.33
+Metatranscriptomics	36741	15.65	10.51	97.28	0.0	0.0	0.02	0.04
+RNA-seq	15890	68.12	37.13	86.48	0.0	0.01	0.0	1.03
+Viral RNA	22407	48.36	5.16	99.38	0.0	0.0	0.0	0.01
+WGS	99745	55.44	39.42	69.15	0.0	0.0	0.0	0.45
+	169	58.58	39.05	89.94	0.0	0.0	0.0	0.0

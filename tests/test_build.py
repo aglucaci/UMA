@@ -1,11 +1,12 @@
 """UMA build tests on a tiny UMDB release (tests/fixtures/release, contract umdb-release/1).
 
 The fixture is written by UMDB's own release code from UMDB's test catalog (two BioSamples,
-three runs, two BioProjects, one with two assays) plus a minimal STRIGA results folder.
-Run: python3 -m unittest discover tests   (or: bin/uma test)
+three runs, two BioProjects, one BioSample in both with two assays) plus a minimal STRIGA
+results folder. Run: python3 -m unittest discover tests   (or: bin/uma test)
 """
 import json
 import os
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -28,13 +29,11 @@ class BuildTests(unittest.TestCase):
         cls.tmp = tempfile.TemporaryDirectory()
         rel = os.path.join(cls.tmp.name, "release")
         shutil.copytree(FIXTURE, rel)
-        os.makedirs(os.path.join(cls.tmp.name, "docs", "assets"))
-        cls.out = os.path.join(cls.tmp.name, "docs", "db")
-        os.makedirs(cls.out)
-        with open(os.path.join(cls.out, "srr_records_part000.json"), "w") as fh:
-            fh.write("[]")
+        cls.out = os.path.join(cls.tmp.name, "docs", "data")
+        os.makedirs(os.path.join(cls.out, "p"))
+        open(os.path.join(cls.out, "p", "PRJOLD1.json"), "w").write("{}")   # a study no longer in the release
         cls.release = Release(rel, work_dir=os.path.join(cls.tmp.name, "db"))
-        cls.manifest = build.build_site(cls.release, cls.out)
+        cls.doc = build.build_site(cls.release, cls.out)
         cls.con = sqlite3.connect(cls.release.database())
 
     @classmethod
@@ -49,48 +48,49 @@ class BuildTests(unittest.TestCase):
     def q(self, sql):
         return self.con.execute(sql).fetchone()[0]
 
-    def test_cube_totals_equal_sqlite_counts(self):
-        cube, samples, summary = self.load("cube.json"), self.load("samples.json"), self.load("summary.json")
-        rix = {k: i for i, k in enumerate(cube["cols"])}
-        six = {k: i for i, k in enumerate(samples["cols"])}
-        self.assertEqual(sum(r[rix["runs"]] for r in cube["rows"]), self.q("SELECT count(*) FROM runs"))
-        self.assertEqual(sum(r[six["samples"]] for r in samples["rows"]),
-                         self.q("SELECT count(DISTINCT sample_accession) FROM runs"))
-        self.assertEqual((summary["totalRuns"], summary["totalBioSamples"], summary["totalProjects"]), (3, 2, 2))
-        # the two-assay, two-project sample sits in one row, with set-valued dims
-        D = samples["dims"]
-        multi = [r for r in samples["rows"] if len(D["assaysets"][r[six["assays"]]]) == 2]
-        self.assertEqual(len(multi), 1)
-        self.assertEqual(len(D["projsets"][multi[0][six["projects"]]]), 2)
+    def test_release_document(self):
+        r = self.load("release.json")
+        self.assertEqual((r["version"], r["contract"]), ("0.0.0-test", "umdb-release/1"))
+        self.assertEqual(r["analysis"]["pipeline"]["name"], "STRIGA")
+        self.assertEqual(sum(r["tiers"].values()), self.q("SELECT count(*) FROM samples"))
+        self.assertTrue(all(not k.startswith("analysis/") for k in r["files"]))
 
-    def test_geography_and_project_files(self):
-        geo, projects = self.load("geo.json"), self.load("projects.json")
-        self.assertEqual([p[1] for p in geo["places"]], ["New York City"])
-        self.assertIn("GeoNames", geo["attribution"])
-        acc = projects["rows"][0][0]
-        shard = self.load(os.path.join("p", build.shard_name(acc)))
-        self.assertEqual(len(shard["runs"]), projects["rows"][0][5])
-        self.assertFalse(os.path.exists(os.path.join(self.out, "srr_records_part000.json")))  # legacy removed
+    def test_findings_and_their_files(self):
+        f = self.load("findings.json")
+        self.assertTrue(f["available"])
+        (h,) = f["hypotheses"]
+        self.assertEqual((h["id"], h["status"], h["result"]), ("C1", "supported", "ok"))
+        self.assertEqual(f["status_counts"], {"supported": 1})
 
-    def test_release_is_recorded(self):
-        m = self.load("manifest.json")
-        self.assertEqual(m["release"]["version"], "0.0.0-test")
-        self.assertEqual(m["release"]["analysis"]["name"], "STRIGA")
-        self.assertEqual(m["counts"]["biosamples"], 2)
+    def test_studies_index_counts_match_the_database(self):
+        s = self.load("studies.json")
+        rows = [dict(zip(s["cols"], r)) for r in s["rows"]]
+        self.assertEqual(sorted(r["accession"] for r in rows), ["PRJNA1", "PRJNA2"])
+        self.assertEqual(sum(r["runs"] for r in rows), self.q("SELECT count(*) FROM runs"))
+        prj2 = next(r for r in rows if r["accession"] == "PRJNA2")
+        self.assertEqual(prj2["assays"], ["16S"])
 
-    def test_collections_templates_and_analysis_come_from_the_release(self):
-        self.assertEqual(len(self.load("collections.json")["collections"]), 6)
-        self.assertTrue(os.path.exists(os.path.join(self.out, "collections", "global-wastewater.tsv.gz")))
-        tpl = os.path.join(os.path.dirname(self.out), "assets", "cohort-templates.json")
-        self.assertIn("readme", json.load(open(tpl)))
-        a = self.load("analysis.json")
-        self.assertTrue(a["available"])
-        self.assertEqual([(h["id"], h["status"]) for h in a["hypotheses"]], [("C1", "supported")])
-        self.assertEqual(a["pipeline"]["version"], "0.2.0")
+    def test_study_files_and_accession_index(self):
+        d = self.load("p/PRJNA2.json")
+        samples = [dict(zip(d["sample_cols"], r)) for r in d["samples"]]
+        self.assertEqual([s["accession"] for s in samples], ["SAMN1"])
+        self.assertEqual(samples[0]["place"], "New York City")
+        self.assertEqual(d["sample_projects"], {"SAMN1": ["PRJNA1", "PRJNA2"]})
+        self.assertFalse(os.path.exists(os.path.join(self.out, "p", "PRJOLD1.json")))  # removed
+        self.assertEqual(self.load(f"ix/{build.ix_bucket('SAMN1')}.json")["SAMN1"], ["PRJNA1", "PRJNA2"])
+        self.assertEqual(self.load(f"ix/{build.ix_bucket('SRR3')}.json")["SRR3"], "PRJNA2")
 
-    def test_unchanged_project_files_are_not_rewritten(self):
-        acc = self.load("projects.json")["rows"][0][0]
-        path = os.path.join(self.out, "p", build.shard_name(acc))
+    def test_places_count_each_biosample_once(self):
+        p = self.load("places.json")
+        places = [dict(zip(p["place_cols"], r)) for r in p["places"]]
+        nyc = next(x for x in places if x["name"] == "New York City")
+        self.assertEqual(nyc["samples"], 1)                 # SAMN1 is in two studies
+        self.assertEqual(nyc["studies"], ["PRJNA1", "PRJNA2"])
+        us = [dict(zip(p["country_cols"], r)) for r in p["countries"]][0]
+        self.assertEqual((us["iso2"], us["samples"], us["studies"]), ("US", 1, 2))
+
+    def test_rebuild_leaves_unchanged_files_alone(self):
+        path = os.path.join(self.out, "p", "PRJNA1.json")
         mtime = os.path.getmtime(path)
         build.build_site(self.release, self.out)
         self.assertEqual(os.path.getmtime(path), mtime)
@@ -104,38 +104,29 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "not supported"):
                 Release(d)
 
-
-class IndexTests(unittest.TestCase):
-    def test_ix_bucket_matches_browser(self):
-        # docs/assets/db.js: last two digits of the accession, zero-padded; 'xx' without digits
-        self.assertEqual(build.ix_bucket("SAMN03270027"), "27")
-        self.assertEqual(build.ix_bucket("SRR5"), "05")
-        self.assertEqual(build.ix_bucket("ABC"), "xx")
+    def test_build_leaves_the_release_folder_untouched(self):
+        with tempfile.TemporaryDirectory() as d:
+            before = sorted(os.listdir(FIXTURE))
+            self.assertTrue(Release(FIXTURE, work_dir=d).database().startswith(d))
+            self.assertEqual(sorted(os.listdir(FIXTURE)), before)
 
 
 @unittest.skipUnless(shutil.which("node"), "needs node")
 class BrowserParityTests(unittest.TestCase):
-    def test_workspace_prng_matches_umdb(self):
-        # UMDB's tests/test_cohorts.py checks the Python mulberry32 against these same values,
-        # so a cohort balanced in the Workspace equals `umdb cohort export` of the same definition.
-        js = os.path.join(ROOT, "docs", "assets", "workspace.js")
-        src = open(js, encoding="utf-8").read()
-        start = src.index("function mulberry32")
-        body = src[start:src.index("\n  }\n", start) + 4]
-        out = subprocess.run(["node", "-e", body + "\nconst r = mulberry32(20261119);"
-                              "console.log([r(), r(), r(), r()].map((x) => x.toFixed(12)).join(' '))"],
-                             capture_output=True, text=True, check=True).stdout.split()
-        self.assertEqual(out, ["0.582067719661", "0.366967471316", "0.278875814751", "0.921800950775"])
+    """uma.js must find files with the same names the builder writes."""
+
+    def js(self, expr):
+        src = open(os.path.join(ROOT, "docs", "assets", "uma.js"), encoding="utf-8").read()
+        body = "\n".join(re.findall(r"^  const (?:safeName|ixBucket) = .*$", src, re.M))
+        return subprocess.run(["node", "-e", body + f"\nconsole.log(JSON.stringify({expr}))"],
+                              capture_output=True, text=True, check=True).stdout.strip()
+
+    def test_ix_bucket_and_file_names_match(self):
+        for acc in ("SAMN03270027", "SRR5", "ABC", "PRJNA271013"):
+            self.assertEqual(json.loads(self.js(f"ixBucket({json.dumps(acc)})")), build.ix_bucket(acc))
+        for acc in ("PRJNA271013", "odd/name", ""):
+            self.assertEqual(json.loads(self.js(f"safeName({json.dumps(acc)})")), build.safe_name(acc or "_none"))
 
 
 if __name__ == "__main__":
     unittest.main()
-
-
-class ReleaseFolderTests(unittest.TestCase):
-    def test_build_leaves_the_release_folder_untouched(self):
-        with tempfile.TemporaryDirectory() as d:
-            before = sorted(os.listdir(FIXTURE))
-            r = Release(FIXTURE, work_dir=d)
-            self.assertTrue(r.database().startswith(d))
-            self.assertEqual(sorted(os.listdir(FIXTURE)), before)

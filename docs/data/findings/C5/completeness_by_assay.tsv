@@ -1,0 +1,9 @@
+assay	has_place	has_coordinates	has_collection_date	has_env_broad_scale
+16S	76.6	72.9	79.8	51.8
+Amplicon	63.3	55.6	66.2	26.3
+ITS	49.2	70.1	60.1	30.9
+Metatranscriptomics	11.6	5.8	98.2	3.2
+RNA-seq	84.5	42.4	88.7	42.7
+Viral RNA	49.5	1.0	99.5	0.3
+WGS	63.3	57.6	77.1	22.5
+other	78.0	87.3	60.0	15.3

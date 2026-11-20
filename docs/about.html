@@ -1,133 +1,72 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>UMA — About</title>
-  <meta name="description" content="About UMDB, a public urban environmental omics resource and searchable database." />
-  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon_16.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon_32.png" />
-  <link rel="icon" href="./assets/favicon.ico" />
-  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-  <meta property="og:image" content="./assets/umdb-logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/site.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — UMA</title>
+  <link rel="icon" href="./assets/favicon_32.png" type="image/png">
+  <link rel="stylesheet" href="./assets/uma.css">
 </head>
 <body>
-  <div class="site-shell">
-    <nav class="site-nav">
-      <a class="site-brand" href="./index.html">
-        <div class="site-brand-mark"><img src="./assets/umdb-logo.png" alt="UMDB logo" /></div>
-        <div class="site-brand-copy">
-          <strong>UMA</strong>
-          <span>Browser for the Urban Microbiome Database</span>
-        </div>
-      </a>
-      <div class="site-links">
-        <a href="./index.html">Home</a>
-        <a href="./explorer.html">Explorer</a>
-        <a href="./global-map.html">Atlas</a>
-        <a href="./analytics.html">Analytics</a>
-        <a href="./collections.html">Collections</a>
-        <a href="./workspace.html">Workspace</a>
-        <a href="./data.html">Downloads</a>
-        <a href="./methodology.html">Methods</a>
-        <a class="is-active" href="./about.html">About</a>
-      </div>
-    </nav>
-
-    <section class="hero">
-      <div class="eyebrow">Resource Overview</div>
-      <h1>UMDB frames the database as scientific infrastructure, not just a dashboard.</h1>
-      <p>
-        UMDB is a public-facing bioinformatics resource for discovering, contextualizing, and reusing urban environmental
-        sequencing datasets. It combines a searchable web interface with downloadable records and transparent methods so the
-        resource can support manuscript review, comparative analysis, and downstream meta-analysis.
-      </p>
-      <div class="hero-actions">
-        <a class="button-link primary" href="./index.html">Open Database Explorer</a>
-        <a class="button-link" href="./methodology.html">Read Methods</a>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-header">
-        <h2>Intended Use Cases</h2>
-      </div>
-      <div class="text-columns">
-        <div class="panel">
-          <div class="info-list">
-            <div class="info-item">
-              <strong>Dataset discovery</strong>
-              Find urban studies by geography, assay class, sequencing center, or BioProject accession.
-            </div>
-            <div class="info-item">
-              <strong>Comparative synthesis</strong>
-              Estimate which countries, cities, and assay types dominate the visible public urban omics landscape.
-            </div>
-            <div class="info-item">
-              <strong>Curation support</strong>
-              Identify records with incomplete or ambiguous location metadata that may need manual follow-up.
-            </div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="info-list">
-            <div class="info-item">
-              <strong>Resource citation</strong>
-              Present the portal as a maintained database with methods, schema notes, and explicit caveats suitable for peer review.
-            </div>
-            <div class="info-item">
-              <strong>Programmatic reuse</strong>
-              Download structured JSON and derive local tables, harmonized catalogs, or study cohorts for external analysis.
-            </div>
-            <div class="info-item">
-              <strong>Landscape monitoring</strong>
-              Track how the public urban omics corpus changes over time as new SRR records are added.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-header">
-        <h2>Strengths And Boundaries</h2>
-      </div>
-      <div class="split">
-        <div class="panel">
-          <div class="kicker">Strengths</div>
-          <div class="checklist">
-            <span>NCBI-backed source records</span>
-            <span>Static hosting and reproducible distribution</span>
-            <span>Searchable BioProject-level aggregation</span>
-            <span>SRR-level provenance retained</span>
-            <span>Public JSON artifacts for reuse</span>
-            <span>Built for continual updates</span>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="kicker">Limitations</div>
-          <div class="checklist">
-            <span>Metadata quality depends on submitter annotations</span>
-            <span>Geographic fields may be incomplete or inconsistent</span>
-            <span>Automated assay labels are heuristic summaries</span>
-            <span>Database inclusion does not imply study quality ranking</span>
-            <span>Coverage reflects what is publicly deposited</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      UMDB is distributed as a public scientific resource for research discovery and reuse. Source-linked records remain subject
-      to the metadata quality and submission practices of the original repositories.
-    </footer>
+<main class="wrap">
+  <div class="hero">
+    <h1>About this release</h1>
+    <p class="lead">UMA shows one versioned release of the Urban Microbiome Database (UMDB): the catalog of public urban microbiome sequencing as it stood when the release was cut, and the analyses STRIGA ran on exactly that catalog.</p>
   </div>
 
-  <script src="./assets/db.js"></script>
-  <script src="./assets/page-loading.js"></script>
+  <div class="grid g3">
+    <div class="card"><h3>UMDB</h3><p class="small">Harvests studies, BioSamples and runs from NCBI SRA, BioSample and BioProject; screens every BioSample for urban evidence (five tiers, with the evidence); validates locations against GeoNames; publishes versioned releases. Its live, unreleased catalog is at <a href="https://aglucaci.github.io/UMDB/">aglucaci.github.io/UMDB</a>.</p><p class="small"><a href="https://github.com/aglucaci/UMDB">github.com/aglucaci/UMDB</a></p></div>
+    <div class="card"><h3>STRIGA</h3><p class="small">A Nextflow pipeline that tests pre-registered hypotheses on a UMDB catalog, with outside data (World Bank, GeoNames, OpenFlights). It records the SHA-256 of the database it analysed, and a release only bundles results from that exact database.</p><p class="small"><a href="https://github.com/aglucaci/STRIGA">github.com/aglucaci/STRIGA</a></p></div>
+    <div class="card"><h3>UMA</h3><p class="small">This site. <span class="mono">uma build</span> reads one release and writes static files: the findings with their figures and tables, an index of studies and places, and one record file per study. No server, no account.</p><p class="small"><a href="https://github.com/aglucaci/UMA">github.com/aglucaci/UMA</a></p></div>
+  </div>
+
+  <section class="card"><h2>Release</h2><dl class="kv" id="kv"><dd class="loading">Loading…</dd></dl></section>
+
+  <section class="card">
+    <h2>Cite</h2>
+    <p class="small">Cite the release you used, with its version and DOI, and the original studies whose data you reuse (their BioProject accessions are on each study page). For results shown under Findings, also name the STRIGA version.</p>
+    <pre class="mono small" id="cite" style="white-space:pre-wrap;background:var(--surface-2);padding:12px;border-radius:8px;margin:0"></pre>
+  </section>
+
+  <section class="card">
+    <h2>Licences</h2>
+    <dl class="kv small" id="lic"></dl>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Files in the release</h2><span class="small muted">Verify a download with <span class="mono">shasum -a 256 -c checksums.sha256</span></span></div>
+    <div id="files"></div>
+  </section>
+</main>
+<script src="./assets/uma.js"></script>
+<script>
+(async () => {
+  const U = window.UMA; const { esc, fmt } = U;
+  U.frame("about");
+  try {
+    const rel = await U.releaseInfo();
+    const a = rel.analysis || {}, p = a.pipeline || {};
+    document.getElementById("kv").innerHTML = [
+      ["Version", `<a href="${esc(rel.url)}">${esc(rel.version)}</a>`], ["DOI", rel.doi ? `<a href="https://doi.org/${esc(rel.doi)}">${esc(rel.doi)}</a>` : "not minted yet"],
+      ["Released", esc((rel.created_utc || "").slice(0, 16).replace("T", " "))], ["Catalog built", esc((rel.database_built_utc || "").slice(0, 16).replace("T", " "))],
+      ["Contract", `<span class="mono">${esc(rel.contract)}</span>`], ["Schema", esc(rel.schema_version)],
+      ["Rule versions", `eligibility ${esc(rel.eligibility_rules_version)}, locations ${esc(rel.geo_rules_version)}, discovery queries ${esc(rel.query_profiles_version)}`],
+      ["Counts", Object.entries(rel.counts || {}).filter(([k]) => !k.startsWith("locations_")).map(([k, v]) => `${esc(k.replace(/_/g, " "))} ${fmt(Number(v))}`).join(" · ")],
+      ["Curated collections", (rel.collections || []).map(esc).join(", ")],
+      ["Analyses", a.available ? `STRIGA ${esc(p.version)}${p.commit ? ` (<span class="mono">${esc(p.commit)}</span>)` : ""}` : "none"],
+      ["This site built", esc((rel.built_utc || "").slice(0, 16).replace("T", " "))],
+    ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+    document.getElementById("cite").textContent = `Lucaci, A. G. UMDB: Urban Microbiome Database, release ${rel.version}${rel.doi ? `. https://doi.org/${rel.doi}` : `. ${rel.url}`}`
+      + (a.available ? `\nAnalyses: STRIGA ${p.version}, https://github.com/aglucaci/STRIGA` : "");
+    document.getElementById("lic").innerHTML = Object.entries(rel.licenses || {}).map(([k, v]) => `<dt>${esc(k.replace(/_/g, " "))}</dt><dd>${esc(v)}</dd>`).join("");
+    const files = Object.entries(rel.files || {}).map(([path, f]) => ({ path, ...f })).sort((x, y) => x.path.localeCompare(y.path));
+    U.table(document.getElementById("files"), [
+      { label: "File", render: (f) => `<span class="mono">${esc(f.path)}</span>` },
+      { label: "Size", num: true, render: (f) => f.bytes == null ? "" : f.bytes > 1e6 ? `${(f.bytes / 1e6).toFixed(1)} MB` : `${(f.bytes / 1e3).toFixed(1)} KB` },
+      { label: "SHA-256", render: (f) => `<span class="mono small" title="${esc(f.sha256)}">${esc((f.sha256 || "").slice(0, 16))}…</span>` },
+    ], files, { pageSize: 100 });
+  } catch (e) { U.fail(document.getElementById("kv"), `Could not load the release (${e.message}).`); }
+})();
+</script>
 </body>
 </html>

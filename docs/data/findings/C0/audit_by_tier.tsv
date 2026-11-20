@@ -1,0 +1,6 @@
+urban_status	samples	has_place	has_coordinates	has_collection_date	flag_date_future	flag_date_after_release	flag_date_implausible	flag_coords_conflict
+confirmed_urban	103028	39.73	25.99	76.94	0.0	0.0	0.0	0.36
+non_environmental	40664	54.16	48.0	54.88	0.0	0.0	0.01	0.2
+non_urban	21006	37.2	40.26	63.12	0.0	0.0	0.0	0.85
+probable_urban	122352	71.17	62.53	80.75	0.03	0.0	0.01	1.45
+uncertain	119127	41.14	37.85	69.34	0.06	0.03	0.01	0.93

@@ -1,4 +1,4 @@
-# Rebuild the website data (docs/db/) from a published UMDB release and commit it;
+# Rebuild the website data (docs/data/) from a published UMDB release and commit it;
 # GitHub Pages then publishes docs/. Run it by hand after UMDB publishes a release,
 # or from UMDB with a repository_dispatch event of type "umdb-release"
 # (client_payload: {"version": "1.0.0", "doi": "10.5281/zenodo.…"}).
@@ -34,19 +34,19 @@ jobs:
           python-version: "3.13"
       - name: Tests
         run: python -m unittest discover tests
-      - name: Build docs/db from the release
+      - name: Build docs/data from the release
         run: |
           set -euo pipefail
           args=()
           [ -n "$DOI" ] && args+=(--doi "$DOI")
           bin/uma build "$VERSION" "${args[@]}"
-          python -c "import json; m = json.load(open('docs/db/manifest.json')); print('Built from UMDB release', m['release']['version'])"
+          python -c "import json; print('Built from UMDB release', json.load(open('docs/data/release.json'))['version'])"
       - name: Commit
         run: |
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add docs
-          v=$(python -c "import json; print(json.load(open('docs/db/manifest.json'))['release']['version'])")
+          v=$(python -c "import json; print(json.load(open('docs/data/release.json'))['version'])")
           git commit -m "Site data from UMDB release $v" || { echo "No changes"; exit 0; }
           git push

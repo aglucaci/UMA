@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findings — UMA</title>
+  <link rel="icon" href="./assets/favicon_32.png" type="image/png">
+  <link rel="stylesheet" href="./assets/uma.css">
+</head>
+<body>
+<main class="wrap" id="main"><div class="loading">Loading findings…</div></main>
+<script src="./assets/uma.js"></script>
+<script>
+(async () => {
+  const U = window.UMA; const { esc, fmt } = U;
+  U.frame("findings");
+  const main = document.getElementById("main");
+  let F;
+  try { F = await U.getJSON("findings.json"); } catch (e) { return U.fail(main, `Could not load findings (${e.message}).`); }
+  if (!F.available) return U.fail(main, "This release has no bundled STRIGA analyses.");
+  const id = U.param("id");
+  if (id) return detail(F.hypotheses.find((h) => h.id === id));
+  list();
+
+  // ---------------------------------------------------------------- list
+  function list(){
+    const p = F.pipeline || {};
+    main.innerHTML = `<div class="hero"><h1>Findings</h1>
+        <p class="lead">Every hypothesis STRIGA has registered, and what it found on this release's catalog. Each test applies a decision rule written before it saw the data; statuses are statements about the evidence in UMDB under that rule, not general truths.</p>
+        <p class="small muted">STRIGA ${esc(p.version || "")}${p.commit ? ` (commit <span class="mono">${esc(p.commit.slice(0, 7))}</span>)` : ""} · run ${esc((F.created_utc || "").slice(0, 10))} · ${fmt((F.input || {}).rows && F.input.rows.samples)} BioSamples analysed</p></div>
+      <div class="filters">
+        <input type="search" id="q" placeholder="Filter by words…" aria-label="Filter findings" style="flex:1;min-width:200px">
+        <select id="track" aria-label="Track"><option value="">All tracks</option>${Object.entries(U.TRACK).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select>
+        <button class="btn" id="csv">Download CSV</button>
+      </div>
+      <div class="chips" id="chips" style="margin-bottom:14px"></div>
+      <div class="grid g3" id="cards"></div>`;
+    const counts = F.status_counts || {};
+    const on = new Set(U.param("status") ? U.param("status").split(",") : []);
+    const chips = document.getElementById("chips");
+    chips.innerHTML = U.STATUS_ORDER.filter((s) => counts[s]).map((s) => `<button class="chip" data-s="${s}">${esc(U.STATUS[s])} · ${counts[s]}</button>`).join("");
+    const draw = () => {
+      const q = document.getElementById("q").value.toLowerCase().trim();
+      const tr = document.getElementById("track").value;
+      chips.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", on.has(c.dataset.s)));
+      const hs = F.hypotheses.filter((h) => (!on.size || on.has(h.status)) && (!tr || h.track === tr)
+        && (!q || [h.id, h.title, h.program, h.result, h.question].join(" ").toLowerCase().includes(q)));
+      document.getElementById("cards").innerHTML = hs.length ? hs.map((h) => `<a class="card finding" href="${U.href.finding(h.id)}">
+          <span class="id">${esc(h.id)} · ${esc(U.TRACK[h.track] || h.track)} · ${esc(h.program)}</span>
+          <h3>${esc(h.title)}</h3>${h.question ? `<span class="small">${esc(h.question)}</span>` : ""}
+          <span class="res">${esc(h.result)}</span>
+          <span class="meta">${U.statusPill(h.status)}${(h.figures || []).length ? `<span class="small faint">${h.figures.length} figure${h.figures.length > 1 ? "s" : ""}</span>` : ""}${(h.tables || []).length ? `<span class="small faint">${h.tables.length} table${h.tables.length > 1 ? "s" : ""}</span>` : ""}</span></a>`).join("")
+        : `<p class="muted">No finding matches.</p>`;
+      return hs;
+    };
+    chips.onclick = (e) => { const s = e.target.dataset.s; if (!s) return; on.has(s) ? on.delete(s) : on.add(s); draw(); };
+    document.getElementById("q").oninput = draw;
+    document.getElementById("track").onchange = draw;
+    document.getElementById("csv").onclick = () => U.download(`umdb_findings.csv`,
+      U.toCSV(draw(), ["id", "track", "program", "title", "status", "question", "result"]), "text/csv");
+    draw();
+  }
+
+  // Key results as text: numbers rounded, lists joined, objects as "key value" pairs.
+  function show(v){
+    if (typeof v === "number") return v.toLocaleString("en-US", { maximumFractionDigits: 4 });
+    if (Array.isArray(v)) return v.map(show).join(" – ");
+    if (v && typeof v === "object") return Object.entries(v).map(([k, x]) => `${k.replace(/_/g, " ")} ${show(x)}`).join(" · ");
+    return v ?? "";
+  }
+
+  // ---------------------------------------------------------------- one finding
+  async function detail(h){
+    if (!h) return U.fail(main, `No finding ${id} in this release.`);
+    U.setTitle(`${h.id}: ${h.title}`);
+    const idx = F.hypotheses.indexOf(h);
+    const prev = F.hypotheses[idx - 1], next = F.hypotheses[idx + 1];
+    const results = Object.entries(h.results || {});
+    main.innerHTML = `<p class="small"><a href="./findings.html">← All findings</a></p>
+      <div class="hero"><p class="mono faint" style="margin:0">${esc(h.id)} · ${esc(U.TRACK[h.track] || h.track)} · ${esc(h.program)}</p>
+        <h1>${esc(h.title)}</h1>${h.question ? `<p class="lead">${esc(h.question)}</p>` : ""}
+        <p>${U.statusPill(h.status)}</p></div>
+      <div class="grid g2">
+        <div class="card"><h2>Result</h2><p>${esc(h.result) || '<span class="muted">No result recorded.</span>'}</p>
+          ${h.decision_rule ? `<h3>Decision rule</h3><p class="small">${esc(h.decision_rule)}</p>` : ""}
+          ${h.method ? `<h3>Method</h3><p class="small">${esc(h.method)}</p>` : ""}
+          ${(h.caveats || []).length ? `<h3>Caveats</h3><ul class="caveats small">${h.caveats.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}</div>
+        <div class="card"><h2>Key results</h2>${results.length ? `<dl class="kv results-kv">${results.map(([k, v]) => `<dt>${esc(k.replace(/_/g, " "))}</dt><dd>${esc(show(v))}</dd>`).join("")}</dl>` : `<p class="muted">${["planned", "not_run"].includes(h.status) ? "Not run on this release." : "None recorded."}</p>`}</div>
+      </div>
+      ${(h.figures || []).map((f) => `<section><div class="figure"><img src="./data/${esc(f)}" alt="${esc(h.title)}: ${esc(f.split("/").pop())}" loading="lazy"></div>
+        <p class="small muted">${esc(f.split("/").pop())} · <a href="./data/${esc(f)}" download>download</a></p></section>`).join("")}
+      ${(h.tables || []).map((t, i) => `<section><div class="section-head"><h3 class="mono">${esc(t.split("/").pop())}</h3><a href="./data/${esc(t)}" download>Download TSV</a></div><div data-table="${i}"><div class="loading">Loading table…</div></div></section>`).join("")}
+      ${(h.release_only_files || []).length ? `<p class="small muted" style="margin-top:20px">Also in the release download (<span class="mono">analysis/hypotheses/${esc(h.id)}/</span>): ${h.release_only_files.map(esc).join(", ")}</p>` : ""}
+      <hr><p class="small">${prev ? `<a href="${U.href.finding(prev.id)}">← ${esc(prev.id)}: ${esc(prev.title)}</a>` : ""}${prev && next ? " &nbsp;·&nbsp; " : ""}${next ? `<a href="${U.href.finding(next.id)}">${esc(next.id)}: ${esc(next.title)} →</a>` : ""}</p>`;
+    for (const [i, t] of (h.tables || []).entries()){
+      const el = main.querySelector(`[data-table="${i}"]`);
+      try {
+        const { head, rows } = U.parseTSV(await (await fetch(`./data/${t}`)).text());
+        const isNum = head.map((_, c) => rows.slice(0, 50).every((r) => r[c] === "" || !isNaN(Number(r[c]))));
+        U.table(el, head.map((k, c) => ({ key: c, label: k, num: isNum[c],
+          render: (r) => isNum[c] && r[c] !== "" ? esc(Number(r[c]).toLocaleString("en-US", { maximumFractionDigits: 4 })) : esc(r[c]) })), rows, { pageSize: 15 });
+      } catch (e) { U.fail(el, `Could not load ${t}.`); }
+    }
+  }
+})();
+</script>
+</body>
+</html>

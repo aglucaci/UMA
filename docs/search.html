@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search — UMA</title>
+  <link rel="icon" href="./assets/favicon_32.png" type="image/png">
+  <link rel="stylesheet" href="./assets/uma.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="hero">
+    <h1>Search the release</h1>
+    <p class="lead">Studies, places and countries in this release. Paste a BioProject, BioSample or run accession to open its record.</p>
+    <form class="bigsearch" id="form" role="search">
+      <input type="search" name="q" id="q" placeholder="Words in a study title or centre, a city, a country, or an accession" aria-label="Search">
+      <button class="btn primary">Search</button>
+    </form>
+  </div>
+  <div id="acc"></div>
+  <section id="placesec" hidden>
+    <div class="section-head"><h2>Places</h2><span class="small muted" id="placecount"></span></div>
+    <div id="places"></div>
+  </section>
+  <section>
+    <div class="section-head"><h2>Studies</h2><span class="small muted" id="studycount"></span></div>
+    <div class="filters">
+      <select id="habitat" aria-label="Habitat"><option value="">Any urban habitat</option></select>
+      <select id="assay" aria-label="Assay"><option value="">Any assay</option></select>
+      <select id="country" aria-label="Country"><option value="">Any country</option></select>
+      <label class="small"><input type="checkbox" id="urban" checked> with urban BioSamples</label>
+      <button class="btn" id="csv" type="button">Download CSV</button>
+    </div>
+    <div id="studies"><div class="loading">Loading studies…</div></div>
+  </section>
+</main>
+<script src="./assets/uma.js"></script>
+<script>
+(async () => {
+  const U = window.UMA; const { esc, fmt } = U;
+  U.frame("search");
+  const q0 = U.param("q");
+  document.getElementById("q").value = q0;
+  document.getElementById("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const t = e.target.q.value.trim();
+    if (U.accessionKind(t) || /^[CH]\d{1,2}$/i.test(t)) return U.go(t);
+    history.replaceState(null, "", `?q=${encodeURIComponent(t)}`); run(t);
+  });
+  let S, P;
+  try { [S, P] = await Promise.all([U.getJSON("studies.json"), U.getJSON("places.json")]); }
+  catch (e) { return U.fail(document.getElementById("studies"), `Could not load the index (${e.message}).`); }
+  const studies = U.rows(S.cols, S.rows);
+  const places = U.rows(P.place_cols, P.places);
+  const countries = U.rows(P.country_cols, P.countries);
+  const cname = Object.fromEntries(countries.map((c) => [c.iso2, c.name]));
+  const opts = (id, vals, label) => { document.getElementById(id).innerHTML += vals.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join(""); };
+  opts("habitat", Object.entries(U.HABITAT));
+  opts("assay", [...new Set(studies.flatMap((s) => s.assays))].sort().map((a) => [a, a]));
+  opts("country", countries.slice().sort((a, b) => a.name.localeCompare(b.name)).map((c) => [c.iso2, c.name]));
+  ["habitat", "assay", "country"].forEach((k) => { const v = U.param(k); if (v) document.getElementById(k).value = v; });
+  ["habitat", "assay", "country", "urban"].forEach((k) => document.getElementById(k).onchange = () => run(document.getElementById("q").value.trim()));
+
+  const words = (t) => t.toLowerCase().split(/\s+/).filter(Boolean);
+  const has = (text, ws) => { const s = (text || "").toLowerCase(); return ws.every((w) => s.includes(w)); };
+  let shown = [];
+  async function run(t){
+    const ws = words(t);
+    // an accession typed here: say where it is
+    const accEl = document.getElementById("acc");
+    accEl.innerHTML = "";
+    const kind = U.accessionKind(t.trim());
+    if (kind && kind !== "study"){
+      const hit = await U.lookup(t.trim().toUpperCase());
+      accEl.innerHTML = `<div class="notice">${hit ? `<a href="${U.href[kind](t.trim().toUpperCase())}">Open ${esc(t.trim().toUpperCase())}</a>` : `${esc(t)} is not in this release.`}</div>`;
+    }
+    // places and countries by name
+    const pl = ws.length ? places.filter((p) => has(`${p.name} ${p.region || ""} ${cname[p.country] || ""}`, ws)) : [];
+    const ct = ws.length ? countries.filter((c) => has(c.name, ws)) : [];
+    document.getElementById("placesec").hidden = !(pl.length || ct.length);
+    document.getElementById("placecount").textContent = `${fmt(pl.length)} places, ${fmt(ct.length)} countries`;
+    document.getElementById("places").innerHTML = [
+      ...ct.map((c) => `<a class="chip" href="${U.href.country(c.iso2)}">${esc(c.name)} · ${fmt(c.samples)} BioSamples</a>`),
+      ...pl.slice(0, 40).map((p) => `<a class="chip" href="${U.href.place(p.id)}">${esc(p.name)}, ${esc(cname[p.country] || p.country)} · ${fmt(p.samples)}</a>`),
+    ].join(" ") + (pl.length > 40 ? ` <span class="small muted">and ${fmt(pl.length - 40)} more; refine the search</span>` : "");
+    // studies: words in title, centre or accession; places match too when the words name a place
+    const placeStudies = new Set(pl.length && pl.length <= 40 ? pl.flatMap((p) => p.studies) : []);
+    const f = { habitat: document.getElementById("habitat").value, assay: document.getElementById("assay").value,
+                country: document.getElementById("country").value, urban: document.getElementById("urban").checked };
+    shown = studies.filter((s) => (!ws.length || has(`${s.accession} ${s.title} ${s.center}`, ws) || placeStudies.has(s.accession))
+      && (!f.habitat || s.habitats.includes(f.habitat)) && (!f.assay || s.assays.includes(f.assay))
+      && (!f.country || s.countries.includes(f.country)) && (!f.urban || s.urban_samples > 0));
+    document.getElementById("studycount").textContent = `${fmt(shown.length)} studies`;
+    U.table(document.getElementById("studies"), [
+      { label: "Study", render: (s) => `<a href="${U.href.study(s.accession)}" class="mono">${esc(s.accession)}</a><div>${esc(s.title || "")}</div><div class="small muted">${esc(s.center || "")}</div>` },
+      { label: "Habitats", render: (s) => esc(s.habitats.map((h) => U.HABITAT[h] || h).join(", ")) },
+      { label: "Countries", render: (s) => s.countries.map((c) => `<a href="${U.href.country(c)}">${esc(cname[c] || c)}</a>`).join(", ") },
+      { label: "Assays", render: (s) => esc(s.assays.join(", ")) },
+      { label: "Years", render: (s) => esc(s.first_year === s.last_year ? s.first_year || "" : `${s.first_year}–${s.last_year}`) },
+      { key: "samples", label: "BioSamples", num: true }, { key: "urban_samples", label: "Urban", num: true }, { key: "runs", label: "Runs", num: true },
+    ], shown, { pageSize: 50, empty: "No study matches." });
+  }
+  document.getElementById("csv").onclick = () => U.download("umdb_studies.csv",
+    U.toCSV(shown, ["accession", "title", "center", "samples", "urban_samples", "runs", "first_year", "last_year", "countries", "habitats", "assays"]), "text/csv");
+  run(q0);
+})();
+</script>
+</body>
+</html>
